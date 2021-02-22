@@ -14,8 +14,18 @@
   "activationEvents": [
     "onCommand:vscode-view-charset.helloWorld"
   ],
+  "activationEvents": ["onView:viewcharset"
+  ],
   "main": "./out/extension.js",
   "contributes": {
+    "views": {
+      "explorer": [
+        {
+          "id": "viewcharset",
+          "name": "View Charset"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "vscode-view-charset.helloWorld",
