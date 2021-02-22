@@ -1,10 +1,17 @@
 {
   "name": "vscode-view-charset",
-  "displayName": "vscode-view-charset",
+  "displayName": "View Charset",
   "description": "",
   "version": "0.0.2",
+  "license": "MIT",
   "publisher": "long-kudo",
-  "repository": "https://github.com/long-kudo/vscode-view-charset",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/long-kudo/vscode-view-charset"
+  },
+  "bugs": {
+    "url": "https://github.com/long-kudo/vscode-view-charset/issues"
+  },
   "engines": {
     "vscode": "^1.53.0"
   },
@@ -12,9 +19,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-view-charset.helloWorld"
-  ],
-  "activationEvents": ["onView:viewcharset"
+    "onCommand:vscode-view-charset.helloWorld",
+    "onView:viewcharset"
   ],
   "main": "./out/extension.js",
   "contributes": {
