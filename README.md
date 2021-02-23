@@ -1,4 +1,4 @@
-# vscode-view-charset README
+# vscode-view-charset
 
 Coding...  
 機能実装中。。。
