@@ -1,8 +1,8 @@
 {
   "name": "vscode-view-charset",
   "displayName": "View Charset",
-  "description": "",
-  "version": "0.0.2",
+  "description": "View Charset in Tree View",
+  "version": "0.0.3",
   "license": "MIT",
   "publisher": "long-kudo",
   "repository": {
@@ -19,7 +19,6 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-view-charset.helloWorld",
     "onView:viewcharset"
   ],
   "main": "./out/extension.js",
@@ -31,13 +30,7 @@
           "name": "View Charset"
         }
       ]
-    },
-    "commands": [
-      {
-        "command": "vscode-view-charset.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
