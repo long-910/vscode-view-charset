@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 
+var encoding = require('encoding-japanese');
 export class Provider implements vscode.TreeDataProvider<TreeItem> {
 
   constructor(private workspaceRoot: string) {
@@ -25,20 +26,24 @@ export class Provider implements vscode.TreeDataProvider<TreeItem> {
 
   private getFiles(parentPath: string): TreeItem[] {
     let treeItem: TreeItem[] = [];
+
     if(this.pathExists(parentPath)){
         let readDir = fs.readdirSync(parentPath);
 
-        //var encoding = require('encoding-japanese');
-        //console.log(encoding.detect(readDir));
-
         readDir.forEach(fileName => {
-          let filePath:string = path.join(parentPath, fileName);
-          let fileColState:vscode.TreeItemCollapsibleState;
+          let filePath: string = path.join(parentPath, fileName);
+          let fileColState: vscode.TreeItemCollapsibleState;
+          let fileEncoding: string;
+
           if(fs.statSync(filePath).isDirectory()){
             fileColState = vscode.TreeItemCollapsibleState.Collapsed;
           }else{
             fileColState = vscode.TreeItemCollapsibleState.None;
-            fileName = fileName + ': T.B.D';
+
+            let fileBuffer = fs.readFileSync(filePath);
+            fileEncoding = encoding.detect(fileBuffer);
+
+            fileName = fileName + ': ' + fileEncoding;
           }
 
           treeItem.push(new TreeItem(fileName, parentPath, fileColState));
