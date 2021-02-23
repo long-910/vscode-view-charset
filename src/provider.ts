@@ -38,6 +38,7 @@ export class Provider implements vscode.TreeDataProvider<TreeItem> {
             fileColState = vscode.TreeItemCollapsibleState.Collapsed;
           }else{
             fileColState = vscode.TreeItemCollapsibleState.None;
+            fileName = fileName + ': T.B.D';
           }
 
           treeItem.push(new TreeItem(fileName, parentPath, fileColState));
