@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	if (vscode.workspace.workspaceFolders !== undefined) {
 		vscode.window.createTreeView('viewcharset', {
-			treeDataProvider: new Provider(vscode.workspace.workspaceFolders[0].uri._fsPath)
+			treeDataProvider: new Provider(vscode.workspace.workspaceFolders[0].uri.fsPath)
 		});
 	}
 }
