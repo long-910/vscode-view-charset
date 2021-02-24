@@ -1,5 +1,11 @@
 # vscode-view-charset
 
+[![Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
+[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
+[![Rating](https://vsmarketplacebadge.apphb.com/rating-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
+[![Build Status](https://travis-ci.com/long-kudo/vscode-view-charset.svg?branch=main)](https://travis-ci.com/long-kudo/vscode-view-charset)
+[![Coverage Status](https://coveralls.io/repos/github/long-kudo/vscode-view-charset/badge.svg?branch=main)](https://coveralls.io/github/long-kudo/vscode-view-charset?branch=main)
+
 Coding...  
 機能実装中。。。
 
@@ -16,6 +22,8 @@ Coding...
 
 File Encoding Batch conversion:
 Coding...  
+
+![view](images/view.png)
 
 ---
 ## Requirements
