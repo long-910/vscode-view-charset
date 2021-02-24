@@ -38,10 +38,10 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "jest",
+    "test": "node ./out/test/runTest.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info"
+    "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",
