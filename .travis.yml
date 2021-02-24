@@ -18,4 +18,7 @@ install:
 
 script:
   - npm run lint
-  - npm run test:coverage && cat ./coverage/lcov.info | ./node_modules/.bin/coveralls
+  - npm run test:coveralls
+
+noficaions:
+  email: false
