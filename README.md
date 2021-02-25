@@ -23,7 +23,7 @@ Coding...
 File Encoding Batch conversion:
 Coding...  
 
-![view](images/view.png)
+![view](https://user-images.githubusercontent.com/69529926/109156871-b5a15580-77b4-11eb-86c0-d6be8dcd3650.png)
 
 ---
 ## Requirements

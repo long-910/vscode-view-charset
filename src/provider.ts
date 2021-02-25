@@ -36,17 +36,15 @@ export class Provider implements vscode.TreeDataProvider<TreeItem> {
           let fileEncoding: string;
 
           if(fs.statSync(filePath).isDirectory()){
-            fileColState = vscode.TreeItemCollapsibleState.Collapsed;
+            fileColState = vscode.TreeItemCollapsibleState.Expanded;
+            fileEncoding = '';
           }else{
             fileColState = vscode.TreeItemCollapsibleState.None;
-
             let fileBuffer = fs.readFileSync(filePath);
             fileEncoding = encoding.detect(fileBuffer);
-
-            fileName = fileName + ': ' + fileEncoding;
           }
 
-          treeItem.push(new TreeItem(fileName, parentPath, fileColState));
+          treeItem.push(new TreeItem(fileName, parentPath, fileEncoding, fileColState));
         });
     }
     return treeItem;
@@ -68,8 +66,10 @@ class TreeItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     public readonly parentPath: string,
+    private charset: string,
     public readonly collapsibaleState: vscode.TreeItemCollapsibleState
     ) {
     super(label, collapsibaleState);
+    this.description = charset;
   }
 }
