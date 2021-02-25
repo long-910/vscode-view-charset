@@ -2,7 +2,7 @@
   "name": "vscode-view-charset",
   "displayName": "View Charset",
   "description": "View Charset in Tree View",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "MIT",
   "publisher": "long-kudo",
   "repository": {

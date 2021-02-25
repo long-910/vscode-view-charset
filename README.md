@@ -5,6 +5,8 @@
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
 [![Build Status](https://travis-ci.com/long-kudo/vscode-view-charset.svg?branch=main)](https://travis-ci.com/long-kudo/vscode-view-charset)
 [![Coverage Status](https://coveralls.io/repos/github/long-kudo/vscode-view-charset/badge.svg?branch=main)](https://coveralls.io/github/long-kudo/vscode-view-charset?branch=main)
+[![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo/vscode-view-charset/test_coverage)
 
 Coding...  
 機能実装中。。。
