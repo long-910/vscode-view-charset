@@ -9,7 +9,8 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo/vscode-view-charset/test_coverage)
 
 Coding...  
-機能実装中。。。
+機能実装中。。。  
+开发中。。。
 
 ----
 ## Features
@@ -25,7 +26,7 @@ Coding...
 File Encoding Batch conversion:
 Coding...  
 
-![view](https://user-images.githubusercontent.com/69529926/109156871-b5a15580-77b4-11eb-86c0-d6be8dcd3650.png)
+![view](https://user-images.githubusercontent.com/69529926/109342067-a9012800-78ae-11eb-9ee8-1f7431d376c1.png)
 
 ---
 ## Requirements
