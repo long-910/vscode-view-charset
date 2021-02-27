@@ -3,7 +3,7 @@
   "displayName": "View Charset",
   "description": "View Charset in Tree View",
   "icon": "images/icon.png",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "publisher": "long-kudo",
   "repository": {
