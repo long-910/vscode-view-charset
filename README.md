@@ -1,6 +1,5 @@
 # vscode-view-charset
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo/vscode-view-charset&utm_campaign=Badge_Grade_Settings)
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
@@ -8,6 +7,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/long-kudo/vscode-view-charset/badge.svg?branch=main)](https://coveralls.io/github/long-kudo/vscode-view-charset?branch=main)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo/vscode-view-charset/test_coverage)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo/vscode-view-charset&utm_campaign=Badge_Grade_Settings)
+
+----
 
 Coding...  
 機能実装中。。。  
@@ -29,23 +31,23 @@ Coding...
 
 ![view](https://user-images.githubusercontent.com/69529926/109342067-a9012800-78ae-11eb-9ee8-1f7431d376c1.png)
 
----
+----
 ## Requirements
 
 T.B.D
 
----
+----
 
 ## Extension Settings
 
 T.B.D
 
----
+----
 ## Known Issues
 
 T.B.D
 
----
+----
 
 ## Release Notes
 
