@@ -1,5 +1,6 @@
 # vscode-view-charset
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo/vscode-view-charset&utm_campaign=Badge_Grade_Settings)
 [![Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
 [![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
 [![Rating](https://vsmarketplacebadge.apphb.com/rating-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
