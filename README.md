@@ -1,14 +1,13 @@
 # vscode-view-charset
 
-[![Marketplace Version](https://vsmarketplacebadge.apphb.com/version-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
-[![Downloads](https://vsmarketplacebadge.apphb.com/downloads-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
-[![Rating](https://vsmarketplacebadge.apphb.com/rating-short/long-kudo.vscode-view-charset.svg)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
-[![Build Status](https://travis-ci.com/long-kudo/vscode-view-charset.svg?branch=main)](https://travis-ci.com/long-kudo/vscode-view-charset)
-[![Coverage Status](https://coveralls.io/repos/github/long-kudo/vscode-view-charset/badge.svg?branch=main)](https://coveralls.io/github/long-kudo/vscode-view-charset?branch=main)
+[![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)  
+[![License](https://img.shields.io/github/license/long-kudo/vscode-view-charset)](https://github.com/long-kudo/vscode-view-charset/blob/main/LICENSE)
+[![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo/vscode-view-charset/test_coverage)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo/vscode-view-charset&utm_campaign=Badge_Grade_Settings)
-[![License](https://img.shields.io/github/license/long-kudo/vscode-view-charset)](https://github.com/long-kudo/vscode-view-charset/blob/main/LICENSE)
 
 ----
 
