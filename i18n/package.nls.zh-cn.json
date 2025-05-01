@@ -1,0 +1,5 @@
+{
+  "extension.displayName": "查看字符集",
+  "extension.description": "一个显示文件编码的扩展",
+  "command.openWebView": "打开查看字符集 Web 视图"
+}
