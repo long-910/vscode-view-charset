@@ -1,0 +1,5 @@
+{
+  "extension.displayName": "View Charset",
+  "extension.description": "ファイルの文字コードを表示する拡張機能",
+  "command.openWebView": "View Charset Web ビューを開く"
+}

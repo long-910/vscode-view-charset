@@ -6,4 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+### Added
+
+- Added WebView feature to display file names and character encodings in a rich UI.
+- Added multi-language support (Japanese, English, Simplified Chinese).
+
+## [0.1.0] - 2025-05-01
+
 - Initial release
