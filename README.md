@@ -3,7 +3,7 @@
 [![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)  
-[![License](https://img.shields.io/github/license/long-kudo/vscode-view-charset)](https://github.com/long-kudo/vscode-view-charset/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo/vscode-view-charset/test_coverage)
@@ -33,7 +33,7 @@
 1. このリポジトリをクローンします:
 
    ```bash
-   git clone https://github.com/long-kudo/vscode-view-charset.git
+   git clone https://github.com/long-910/vscode-view-charset.git
    ```
 
 2. 必要な依存関係をインストールします:
@@ -135,5 +135,5 @@ vscode-view-charset/
 
 ## 作者
 
-- **long-kudo**  
-  GitHub: [long-kudo](https://github.com/long-kudo)
+- **long-910**  
+  GitHub: [long-910](https://github.com/long-910o)
