@@ -7,12 +7,67 @@ import * as nls from 'vscode-nls';
 
 const localize = nls.config({ messageFormat: nls.MessageFormat.bundle })();
 
+// グローバル変数
+let treeDataProvider: CharsetTreeDataProvider;
+
+// キャッシュ用のインターフェース
+interface CacheItem {
+    charset: string;
+    timestamp: number;
+}
+
+// キャッシュストア
+class CacheStore {
+    private cache: Map<string, CacheItem> = new Map();
+    private cacheDuration: number;
+
+    constructor(cacheDuration: number) {
+        this.cacheDuration = cacheDuration;
+    }
+
+    get(filePath: string): string | null {
+        const item = this.cache.get(filePath);
+        if (!item) return null;
+
+        const now = Date.now();
+        if (now - item.timestamp > this.cacheDuration * 1000) {
+            this.cache.delete(filePath);
+            return null;
+        }
+
+        return item.charset;
+    }
+
+    set(filePath: string, charset: string): void {
+        this.cache.set(filePath, {
+            charset,
+            timestamp: Date.now()
+        });
+    }
+
+    clear(): void {
+        this.cache.clear();
+    }
+}
+
 export async function activate(context: vscode.ExtensionContext) {
+    // 設定の変更を監視
+    context.subscriptions.push(
+        vscode.workspace.onDidChangeConfiguration(e => {
+            if (e.affectsConfiguration('viewCharset')) {
+                // 設定が変更されたらキャッシュをクリア
+                cacheStore.clear();
+                // Tree Viewを更新
+                refreshTreeView();
+            }
+        })
+    );
+
     // ワークスペース内のファイルデータを取得
     const fileData = await getWorkspaceFileData();
 
     // TreeDataProviderの登録
-    const treeDataProvider = new CharsetTreeDataProvider(fileData);
+    treeDataProvider = new CharsetTreeDataProvider(fileData);
     vscode.window.registerTreeDataProvider('viewcharset', treeDataProvider);
 
     // コマンドの登録
@@ -26,32 +81,102 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(command);
 }
 
-export function deactivate() {}
+// キャッシュストアのインスタンス化
+const config = vscode.workspace.getConfiguration('viewCharset');
+const cacheStore = new CacheStore(config.get('cacheDuration', 3600));
+
+// Tree Viewを更新する関数
+async function refreshTreeView() {
+    const fileData = await getWorkspaceFileData();
+    treeDataProvider.refresh(fileData);
+}
 
 /**
  * ワークスペース内の全ファイルを取得し、文字コードを検出する
  */
 async function getWorkspaceFileData(): Promise<{ fileName: string; charset: string }[]> {
-    const fileData: { fileName: string; charset: string }[] = [];
-    if (vscode.workspace.workspaceFolders) {
-        const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        const files = await vscode.workspace.findFiles('**/*'); // 非同期処理を待つ
+    if (!vscode.workspace.workspaceFolders) {
+        return [];
+    }
 
-        for (const file of files) {
+    const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
+    const config = vscode.workspace.getConfiguration('viewCharset');
+    const fileExtensions = config.get<string[]>('fileExtensions', []);
+    const maxFileSize = config.get<number>('maxFileSize', 1024) * 1024; // KB to bytes
+    const cacheEnabled = config.get<boolean>('cacheEnabled', true);
+
+    // ファイルパターンの作成
+    const pattern = `**/*.{${fileExtensions.join(',')}}`;
+    const files = await vscode.workspace.findFiles(pattern);
+
+    if (files.length === 0) {
+        return [];
+    }
+
+    // プログレス表示の開始
+    const progressOptions: vscode.ProgressOptions = {
+        location: vscode.ProgressLocation.Notification,
+        title: localize('progress.title', '文字コードを検出中...'),
+        cancellable: true
+    };
+
+    return vscode.window.withProgress(progressOptions, async (progress, token) => {
+        const total = files.length;
+        let processed = 0;
+        const results: { fileName: string; charset: string }[] = [];
+
+        // 並列処理でファイルを読み込む
+        const promises = files.map(async (file) => {
+            if (token.isCancellationRequested) {
+                return null;
+            }
+
             const filePath = file.fsPath;
             try {
-                const buffer = fs.readFileSync(filePath);
-                const detected = encoding.detect(buffer); // 文字コードを検出
-                fileData.push({
+                // キャッシュの確認
+                if (cacheEnabled) {
+                    const cachedCharset = cacheStore.get(filePath);
+                    if (cachedCharset) {
+                        return {
+                            fileName: path.relative(workspaceFolder, filePath),
+                            charset: cachedCharset
+                        };
+                    }
+                }
+
+                // 非同期でファイルを読み込む
+                const buffer = await fs.promises.readFile(filePath);
+
+                // ファイルサイズチェック
+                if (buffer.length > maxFileSize) {
+                    return null;
+                }
+
+                const detected = encoding.detect(buffer);
+                const charset = detected ? detected.toString() : '不明';
+
+                // キャッシュに保存
+                if (cacheEnabled) {
+                    cacheStore.set(filePath, charset);
+                }
+
+                return {
                     fileName: path.relative(workspaceFolder, filePath),
-                    charset: detected ? detected.toString() : '不明',
-                });
+                    charset
+                };
             } catch (error) {
                 console.error(`Error reading file ${filePath}:`, error);
+                return null;
+            } finally {
+                processed++;
+                progress.report({ message: `${processed}/${total}`, increment: 1 });
             }
-        }
-    }
-    return fileData;
+        });
+
+        // 全てのPromiseを待機し、nullでない結果のみをフィルタリング
+        const fileData = await Promise.all(promises);
+        return fileData.filter((result): result is { fileName: string; charset: string } => result !== null);
+    });
 }
 
 /**
