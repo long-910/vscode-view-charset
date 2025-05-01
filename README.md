@@ -63,6 +63,19 @@
    - コマンドパレット（`Ctrl+Shift+P`）を開き、「`Open View Charset Web View`」を実行します。
    - Web ビューにファイル名と文字コードが表示されます。
 
+3. **設定のカスタマイズ**:
+   - VS Codeの設定（`Ctrl+,`）から「View Charset」の設定を変更できます。
+   - 以下の設定項目が利用可能です：
+
+     | 設定項目 | 説明 | デフォルト値 |
+     |---------|------|------------|
+     | `viewCharset.fileExtensions` | 文字コードを検出する対象のファイル拡張子 | `["txt", "csv", "json", "md", "html", "css", "js", "ts", "jsx", "tsx", "xml", "yaml", "yml"]` |
+     | `viewCharset.maxFileSize` | 文字コードを検出する最大ファイルサイズ（KB） | `1024` |
+     | `viewCharset.cacheEnabled` | 文字コードの検出結果をキャッシュするかどうか | `true` |
+     | `viewCharset.cacheDuration` | キャッシュの有効期間（秒） | `3600` |
+
+   - 設定を変更すると、自動的にキャッシュがクリアされ、新しい設定でTree Viewが更新されます。
+
 ---
 
 ## 開発者向け情報
@@ -136,4 +149,4 @@ vscode-view-charset/
 ## 作者
 
 - **long-910**  
-  GitHub: [long-910](https://github.com/long-910o)
+  GitHub: [long-910](https://github.com/long-910)

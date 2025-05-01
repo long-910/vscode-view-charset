@@ -1,17 +1,17 @@
 {
   "name": "vscode-view-charset",
   "displayName": "View Charset",
-  "description": "View Charset in Tree View",
+  "description": "Displays file character encodings in Tree View and Web View, helping to efficiently identify and resolve encoding-related issues.",
   "icon": "images/icon.png",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "publisher": "long-kudo",
   "repository": {
     "type": "git",
-    "url": "https://github.com/long-kudo/vscode-view-charset"
+    "url": "https://github.com/long-910/vscode-view-charset"
   },
   "bugs": {
-    "url": "https://github.com/long-kudo/vscode-view-charset/issues"
+    "url": "https://github.com/long-910/vscode-view-charset/issues"
   },
   "engines": {
     "vscode": "^1.75.0"
@@ -44,7 +44,7 @@
         "localizedLanguageName": "简体中文",
         "translations": [
           {
-            "id": "package",
+            "id": "long-kudo.vscode-view-charset",
             "path": "./i18n/package.nls.zh-cn.json"
           }
         ]
@@ -55,7 +55,7 @@
         "localizedLanguageName": "日本語",
         "translations": [
           {
-            "id": "package",
+            "id": "long-kudo.vscode-view-charset",
             "path": "./i18n/package.nls.ja.json"
           }
         ]
@@ -66,12 +66,51 @@
         "localizedLanguageName": "English",
         "translations": [
           {
-            "id": "package",
+            "id": "long-kudo.vscode-view-charset",
             "path": "./i18n/package.nls.json"
           }
         ]
       }
-    ]
+    ],
+    "configuration": {
+      "title": "View Charset",
+      "properties": {
+        "viewCharset.fileExtensions": {
+          "type": "array",
+          "default": [
+            "txt",
+            "csv",
+            "json",
+            "md",
+            "html",
+            "css",
+            "js",
+            "ts",
+            "jsx",
+            "tsx",
+            "xml",
+            "yaml",
+            "yml"
+          ],
+          "description": "文字コードを検出する対象のファイル拡張子"
+        },
+        "viewCharset.maxFileSize": {
+          "type": "number",
+          "default": 1024,
+          "description": "文字コードを検出する最大ファイルサイズ（KB）"
+        },
+        "viewCharset.cacheEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "文字コードの検出結果をキャッシュするかどうか"
+        },
+        "viewCharset.cacheDuration": {
+          "type": "number",
+          "default": 3600,
+          "description": "キャッシュの有効期間（秒）"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
