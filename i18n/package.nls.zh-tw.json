@@ -1,0 +1,13 @@
+{
+  "extension.displayName": "View Charset",
+  "extension.description": "顯示檔案字元編碼的擴充功能",
+  "command.openWebView": "開啟View Charset WebView",
+  "command.openFile": "開啟檔案",
+  "config.fileExtensions.description": "要掃描以檢測字符編碼的檔案副檔名",
+  "config.maxFileSize.description": "要掃描的最大檔案大小（KB）",
+  "config.cacheEnabled.description": "是否快取字符編碼檢測結果",
+  "config.cacheDuration.description": "快取有效期限（秒）",
+  "config.excludePatterns.description": "要從掃描中排除的模式",
+  "config.debugMode.description": "啟用除錯模式以在輸出通道中顯示詳細日誌",
+  "config.logToFile.description": "將日誌儲存到工作區根目錄的檔案中"
+}

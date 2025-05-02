@@ -1,5 +1,18 @@
 {
-  "extension.displayName": "查看字符集",
-  "extension.description": "一个显示文件编码的扩展",
-  "command.openWebView": "打开查看字符集 Web 视图"
+  "extension.displayName": "View Charset",
+  "extension.description": "显示文件字符编码的扩展",
+  "command.openWebView": "打开View Charset WebView",
+  "command.openFile": "打开文件",
+  "config.fileExtensions.description": "要扫描以检测字符编码的文件扩展名",
+  "config.maxFileSize.description": "要扫描的最大文件大小（KB）",
+  "config.cacheEnabled.description": "是否缓存字符编码检测结果",
+  "config.cacheDuration.description": "缓存有效期（秒）",
+  "config.excludePatterns.description": "要从扫描中排除的模式",
+  "config.debugMode.description": "启用调试模式以在输出通道中显示详细日志",
+  "config.logToFile.description": "将日志保存到工作区根目录的文件中",
+  "progress.title": "正在检测字符编码...",
+  "webview.title": "View Charset - 网页视图",
+  "webview.description": "显示工作区中的文件及其字符编码。",
+  "webview.filename": "文件名",
+  "webview.charset": "字符编码"
 }

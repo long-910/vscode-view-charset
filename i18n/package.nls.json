@@ -1,5 +1,0 @@
-{
-  "extension.displayName": "View Charset",
-  "extension.description": "An extension to display file encodings",
-  "command.openWebView": "Open View Charset Web View"
-}

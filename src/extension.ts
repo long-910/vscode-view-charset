@@ -1,272 +1,353 @@
-import * as vscode from 'vscode';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as encoding from 'encoding-japanese';
-import { CharsetTreeDataProvider } from './TreeDataProvider';
-import * as nls from 'vscode-nls';
+import * as vscode from "vscode";
+import * as fs from "fs";
+import * as path from "path";
+import * as encoding from "encoding-japanese";
+import { CharsetTreeDataProvider } from "./TreeDataProvider";
+import * as nls from "vscode-nls";
+import { Logger } from "./logger";
 
-const localize = nls.config({ messageFormat: nls.MessageFormat.bundle })();
+// 多言語化の設定
+const localize = nls.config({
+  messageFormat: nls.MessageFormat.file,
+  locale: vscode.env.language,
+})();
 
-// グローバル変数
-let treeDataProvider: CharsetTreeDataProvider;
+// ロガーの初期化
+const logger = Logger.getInstance();
 
-// キャッシュ用のインターフェース
-interface CacheItem {
-    charset: string;
-    timestamp: number;
+// キャッシュの型定義
+interface CacheEntry {
+  charset: string;
+  timestamp: number;
 }
 
-// キャッシュストア
-class CacheStore {
-    private cache: Map<string, CacheItem> = new Map();
-    private cacheDuration: number;
+// キャッシュの管理
+class CacheManager {
+  private static instance: CacheManager;
+  private cache: Map<string, CacheEntry> = new Map();
+  private readonly config = vscode.workspace.getConfiguration("viewCharset");
+  private readonly cacheDuration =
+    this.config.get<number>("cacheDuration", 3600) * 1000;
 
-    constructor(cacheDuration: number) {
-        this.cacheDuration = cacheDuration;
+  private constructor() {}
+
+  public static getInstance(): CacheManager {
+    if (!CacheManager.instance) {
+      CacheManager.instance = new CacheManager();
+    }
+    return CacheManager.instance;
+  }
+
+  public get(filePath: string): string | null {
+    const entry = this.cache.get(filePath);
+    if (!entry) return null;
+
+    if (Date.now() - entry.timestamp > this.cacheDuration) {
+      this.cache.delete(filePath);
+      return null;
     }
 
-    get(filePath: string): string | null {
-        const item = this.cache.get(filePath);
-        if (!item) return null;
+    return entry.charset;
+  }
 
-        const now = Date.now();
-        if (now - item.timestamp > this.cacheDuration * 1000) {
-            this.cache.delete(filePath);
-            return null;
+  public set(filePath: string, charset: string): void {
+    this.cache.set(filePath, {
+      charset,
+      timestamp: Date.now(),
+    });
+  }
+
+  public clear(): void {
+    this.cache.clear();
+  }
+}
+
+// 文字コード検出の管理
+export class CharsetDetector {
+  private static instance: CharsetDetector;
+  private readonly config = vscode.workspace.getConfiguration("viewCharset");
+  private readonly maxFileSize =
+    this.config.get<number>("maxFileSize", 1024) * 1024;
+  private readonly fileExtensions = this.config.get<string[]>(
+    "fileExtensions",
+    [".txt", ".csv", ".tsv", ".json", ".xml", ".html", ".css", ".js", ".ts"]
+  );
+  private readonly excludePatterns = this.config.get<string[]>(
+    "excludePatterns",
+    ["**/node_modules/**", "**/.git/**"]
+  );
+  private readonly logger: Logger;
+
+  private constructor() {
+    this.logger = Logger.getInstance();
+    this.logger.debug("CharsetDetector initialized", {
+      maxFileSize: this.maxFileSize,
+      fileExtensions: this.fileExtensions,
+      excludePatterns: this.excludePatterns,
+    });
+  }
+
+  public static getInstance(): CharsetDetector {
+    if (!CharsetDetector.instance) {
+      CharsetDetector.instance = new CharsetDetector();
+    }
+    return CharsetDetector.instance;
+  }
+
+  public async detectCharset(filePath: string): Promise<string> {
+    const cacheManager = CacheManager.getInstance();
+    const cachedCharset = cacheManager.get(filePath);
+    if (cachedCharset) {
+      return cachedCharset;
+    }
+
+    try {
+      const stats = await fs.promises.stat(filePath);
+      if (stats.size > this.maxFileSize) {
+        return "File too large";
+      }
+
+      const buffer = await fs.promises.readFile(filePath);
+      if (buffer.length === 0) {
+        return "Empty file";
+      }
+
+      // 文字コードの検出
+      const detected = encoding.detect(buffer);
+      if (!detected) {
+        return "Unknown";
+      }
+
+      const charset = Array.isArray(detected) ? detected[0] : detected;
+      cacheManager.set(filePath, charset);
+      return charset;
+    } catch (error) {
+      this.logger.error("Error detecting charset", { filePath, error });
+      return "Error";
+    }
+  }
+
+  public shouldProcessFile(filePath: string): boolean {
+    try {
+      this.logger.debug("Checking file", { filePath });
+
+      // ファイルが存在するか確認
+      if (!fs.existsSync(filePath)) {
+        this.logger.debug("File does not exist", { filePath });
+        return false;
+      }
+
+      // ファイルサイズを確認
+      const stats = fs.statSync(filePath);
+      if (stats.size > this.maxFileSize) {
+        this.logger.debug("File too large", {
+          filePath,
+          size: stats.size,
+          maxSize: this.maxFileSize,
+        });
+        return false;
+      }
+
+      // 除外パターンのチェック
+      for (const pattern of this.excludePatterns) {
+        const normalizedPattern = pattern
+          .replace(/\\/g, "/")
+          .replace(/\*\*/g, ".*")
+          .replace(/\*/g, "[^/]*");
+        const regex = new RegExp(normalizedPattern);
+        const normalizedPath = filePath.replace(/\\/g, "/");
+
+        this.logger.debug("Checking exclude pattern", {
+          filePath,
+          pattern,
+          normalizedPattern,
+          normalizedPath,
+          matches: regex.test(normalizedPath),
+        });
+
+        if (regex.test(normalizedPath)) {
+          this.logger.debug("File excluded by pattern", {
+            filePath,
+            pattern,
+            normalizedPattern,
+            normalizedPath,
+          });
+          return false;
         }
+      }
 
-        return item.charset;
+      this.logger.debug("File passed all checks", { filePath });
+      return true;
+    } catch (error) {
+      this.logger.error("Error checking file", {
+        filePath,
+        error,
+        errorMessage: error instanceof Error ? error.message : String(error),
+      });
+      return false;
     }
-
-    set(filePath: string, charset: string): void {
-        this.cache.set(filePath, {
-            charset,
-            timestamp: Date.now()
-        });
-    }
-
-    clear(): void {
-        this.cache.clear();
-    }
+  }
 }
 
-export async function activate(context: vscode.ExtensionContext) {
-    // 設定の変更を監視
-    context.subscriptions.push(
-        vscode.workspace.onDidChangeConfiguration(e => {
-            if (e.affectsConfiguration('viewCharset')) {
-                // 設定が変更されたらキャッシュをクリア
-                cacheStore.clear();
-                // Tree Viewを更新
-                refreshTreeView();
-            }
+export function activate(context: vscode.ExtensionContext) {
+  logger.info("Activating View Charset extension");
+
+  const treeDataProvider = new CharsetTreeDataProvider();
+  const charsetDetector = CharsetDetector.getInstance();
+
+  // ツリービューの登録
+  const treeView = vscode.window.createTreeView("viewcharset", {
+    treeDataProvider,
+    showCollapseAll: true,
+  });
+
+  // コマンドの登録
+  context.subscriptions.push(
+    vscode.commands.registerCommand("viewcharset.openWebView", async () => {
+      const panel = vscode.window.createWebviewPanel(
+        "viewCharsetWebView",
+        localize("webview.title", "View Charset - Web View"),
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+        }
+      );
+
+      // ファイルデータを取得
+      const workspaceFolder =
+        vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+      if (!workspaceFolder) {
+        panel.webview.html = getWebviewContent([]);
+        return;
+      }
+
+      const files = await treeDataProvider.getWorkspaceFiles(workspaceFolder);
+      const fileData = await Promise.all(
+        files.map(async (file) => {
+          const filePath = path.join(workspaceFolder, file);
+          const charset = await charsetDetector.detectCharset(filePath);
+          return { fileName: file, charset };
         })
-    );
+      );
 
-    // ワークスペース内のファイルデータを取得
-    const fileData = await getWorkspaceFileData();
+      panel.webview.html = getWebviewContent(fileData);
+    }),
+    vscode.commands.registerCommand(
+      "viewcharset.openFile",
+      async (filePath: string) => {
+        try {
+          const document = await vscode.workspace.openTextDocument(filePath);
+          await vscode.window.showTextDocument(document);
+          logger.info("Opened file", { filePath });
+        } catch (error) {
+          logger.error("Failed to open file", { filePath, error });
+          vscode.window.showErrorMessage(
+            localize("command.openFile.error.general", "Failed to open file")
+          );
+        }
+      }
+    )
+  );
 
-    // TreeDataProviderの登録
-    treeDataProvider = new CharsetTreeDataProvider(fileData);
-    vscode.window.registerTreeDataProvider('viewcharset', treeDataProvider);
+  // 設定変更の監視
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration("viewCharset")) {
+        CacheManager.getInstance().clear();
+        treeDataProvider.refresh();
+      }
+    })
+  );
 
-    // コマンドの登録
-    registerCommands(context, treeDataProvider, fileData);
+  // ファイル変更の監視
+  context.subscriptions.push(
+    vscode.workspace.onDidSaveTextDocument((document) => {
+      if (charsetDetector.shouldProcessFile(document.fileName)) {
+        treeDataProvider.refresh();
+      }
+    })
+  );
 
-    const commandId = 'viewCharset.openWebView';
-    const command = vscode.commands.registerCommand(commandId, () => {
-        vscode.window.showInformationMessage(localize('command.openWebView', 'Open View Charset Web View'));
-    });
-
-    context.subscriptions.push(command);
+  // 初期表示
+  treeDataProvider.refresh();
 }
 
-// キャッシュストアのインスタンス化
-const config = vscode.workspace.getConfiguration('viewCharset');
-const cacheStore = new CacheStore(config.get('cacheDuration', 3600));
-
-// Tree Viewを更新する関数
-async function refreshTreeView() {
-    const fileData = await getWorkspaceFileData();
-    treeDataProvider.refresh(fileData);
+function getWebviewContent(
+  fileData: { fileName: string; charset: string }[]
+): string {
+  return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>File Charset Information</title>
+      <style>
+          body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+              padding: 20px;
+              color: var(--vscode-foreground);
+              background-color: var(--vscode-editor-background);
+          }
+          table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 20px;
+          }
+          th, td {
+              padding: 8px;
+              text-align: left;
+              border-bottom: 1px solid var(--vscode-panel-border);
+          }
+          th {
+              background-color: var(--vscode-panel-background);
+              font-weight: bold;
+          }
+          tr:hover {
+              background-color: var(--vscode-list-hoverBackground);
+          }
+          .no-files {
+              text-align: center;
+              padding: 20px;
+              color: var(--vscode-descriptionForeground);
+          }
+      </style>
+  </head>
+  <body>
+      <h2>File Charset Information</h2>
+      ${
+        fileData.length > 0
+          ? `
+          <table>
+              <thead>
+                  <tr>
+                      <th>File Name</th>
+                      <th>Charset</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  ${fileData
+                    .map(
+                      (file) => `
+                      <tr>
+                          <td>${file.fileName}</td>
+                          <td>${file.charset}</td>
+                      </tr>
+                  `
+                    )
+                    .join("")}
+              </tbody>
+          </table>
+      `
+          : `
+          <div class="no-files">
+              No files found in the workspace.
+          </div>
+      `
+      }
+  </body>
+  </html>`;
 }
 
-/**
- * ワークスペース内の全ファイルを取得し、文字コードを検出する
- */
-async function getWorkspaceFileData(): Promise<{ fileName: string; charset: string }[]> {
-    if (!vscode.workspace.workspaceFolders) {
-        return [];
-    }
-
-    const workspaceFolder = vscode.workspace.workspaceFolders[0].uri.fsPath;
-    const config = vscode.workspace.getConfiguration('viewCharset');
-    const fileExtensions = config.get<string[]>('fileExtensions', []);
-    const maxFileSize = config.get<number>('maxFileSize', 1024) * 1024; // KB to bytes
-    const cacheEnabled = config.get<boolean>('cacheEnabled', true);
-
-    // ファイルパターンの作成
-    const pattern = `**/*.{${fileExtensions.join(',')}}`;
-    const files = await vscode.workspace.findFiles(pattern);
-
-    if (files.length === 0) {
-        return [];
-    }
-
-    // プログレス表示の開始
-    const progressOptions: vscode.ProgressOptions = {
-        location: vscode.ProgressLocation.Notification,
-        title: localize('progress.title', '文字コードを検出中...'),
-        cancellable: true
-    };
-
-    return vscode.window.withProgress(progressOptions, async (progress, token) => {
-        const total = files.length;
-        let processed = 0;
-        const results: { fileName: string; charset: string }[] = [];
-
-        // 並列処理でファイルを読み込む
-        const promises = files.map(async (file) => {
-            if (token.isCancellationRequested) {
-                return null;
-            }
-
-            const filePath = file.fsPath;
-            try {
-                // キャッシュの確認
-                if (cacheEnabled) {
-                    const cachedCharset = cacheStore.get(filePath);
-                    if (cachedCharset) {
-                        return {
-                            fileName: path.relative(workspaceFolder, filePath),
-                            charset: cachedCharset
-                        };
-                    }
-                }
-
-                // 非同期でファイルを読み込む
-                const buffer = await fs.promises.readFile(filePath);
-
-                // ファイルサイズチェック
-                if (buffer.length > maxFileSize) {
-                    return null;
-                }
-
-                const detected = encoding.detect(buffer);
-                const charset = detected ? detected.toString() : '不明';
-
-                // キャッシュに保存
-                if (cacheEnabled) {
-                    cacheStore.set(filePath, charset);
-                }
-
-                return {
-                    fileName: path.relative(workspaceFolder, filePath),
-                    charset
-                };
-            } catch (error) {
-                console.error(`Error reading file ${filePath}:`, error);
-                return null;
-            } finally {
-                processed++;
-                progress.report({ message: `${processed}/${total}`, increment: 1 });
-            }
-        });
-
-        // 全てのPromiseを待機し、nullでない結果のみをフィルタリング
-        const fileData = await Promise.all(promises);
-        return fileData.filter((result): result is { fileName: string; charset: string } => result !== null);
-    });
-}
-
-/**
- * コマンドを登録する
- */
-function registerCommands(
-    context: vscode.ExtensionContext,
-    treeDataProvider: CharsetTreeDataProvider,
-    fileData: { fileName: string; charset: string }[]
-) {
-    const openWebViewCommand = vscode.commands.registerCommand('viewcharset.openWebView', async () => {
-        const panel = vscode.window.createWebviewPanel(
-            'viewCharsetWebView',
-            'View Charset - Web View',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true, // JavaScriptを有効化
-            }
-        );
-
-        // WebビューのHTMLコンテンツを設定
-        panel.webview.html = getWebviewContent();
-
-        // 動的データを送信
-        panel.webview.postMessage({ command: 'update', data: fileData });
-
-        // Tree Viewを更新
-        treeDataProvider.refresh(fileData);
-    });
-
-    context.subscriptions.push(openWebViewCommand);
-}
-
-/**
- * WebビューのHTMLコンテンツを生成する
- */
-function getWebviewContent(): string {
-    return `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>View Charset</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-                header { background-color: #007acc; color: white; padding: 10px; text-align: center; }
-                main { padding: 20px; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                th { background-color: #f4f4f4; }
-            </style>
-        </head>
-        <body>
-            <header>
-                <h1>View Charset</h1>
-            </header>
-            <main>
-                <p>ワークスペース内のファイルと文字コードを表示します。</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ファイル名</th>
-                            <th>文字コード</th>
-                        </tr>
-                    </thead>
-                    <tbody id="file-data">
-                        <!-- 動的データがここに挿入されます -->
-                    </tbody>
-                </table>
-            </main>
-            <script>
-                // メッセージを受信してデータを表示
-                window.addEventListener('message', event => {
-                    const message = event.data;
-                    if (message.command === 'update') {
-                        const tableBody = document.getElementById('file-data');
-                        tableBody.innerHTML = ''; // 既存のデータをクリア
-                        message.data.forEach(file => {
-                            const row = document.createElement('tr');
-                            row.innerHTML = \`
-                                <td>\${file.fileName}</td>
-                                <td>\${file.charset}</td>
-                            \`;
-                            tableBody.appendChild(row);
-                        });
-                    }
-                });
-            </script>
-        </body>
-        </html>
-    `;
+export function deactivate() {
+  logger.info("Deactivating View Charset extension");
 }
