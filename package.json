@@ -93,32 +93,79 @@
         "viewCharset.fileExtensions": {
           "type": "array",
           "default": [
-            "txt",
-            "csv",
-            "json",
-            "xml",
-            "html",
-            "css",
-            "js",
-            "ts",
-            "md"
+            ".txt",
+            ".csv",
+            ".json",
+            ".xml",
+            ".html",
+            ".css",
+            ".js",
+            ".ts",
+            ".md",
+            ".c",
+            ".h",
+            ".cpp",
+            ".hpp",
+            ".cc",
+            ".hh",
+            ".py",
+            ".pyw",
+            ".pyi",
+            ".java",
+            ".kt",
+            ".kts",
+            ".go",
+            ".rs",
+            ".rb",
+            ".php",
+            ".swift",
+            ".m",
+            ".mm",
+            ".cs",
+            ".vb",
+            ".fs",
+            ".fsx",
+            ".fsi",
+            ".fsproj",
+            ".vbproj",
+            ".csproj",
+            ".sln",
+            ".sh",
+            ".bash",
+            ".zsh",
+            ".fish",
+            ".ps1",
+            ".bat",
+            ".cmd",
+            ".ini",
+            ".cfg",
+            ".conf",
+            ".properties",
+            ".env",
+            ".gitignore",
+            ".gitattributes",
+            ".editorconfig",
+            ".dockerfile",
+            ".dockerignore",
+            ".makefile",
+            ".mk"
           ],
-          "description": "File extensions to analyze for character encoding"
+          "description": "%config.fileExtensions.description%"
         },
         "viewCharset.maxFileSize": {
           "type": "number",
           "default": 1024,
-          "description": "Maximum file size in KB to analyze"
+          "description": "%config.maxFileSize.description%"
         },
         "viewCharset.cacheEnabled": {
           "type": "boolean",
           "default": true,
-          "description": "Enable caching of character encoding results"
+          "description": "%config.cacheEnabled.description%"
         },
         "viewCharset.cacheDuration": {
           "type": "number",
           "default": 3600,
-          "description": "Cache duration in seconds"
+          "description": "%config.cacheDuration.description%"
         },
         "viewCharset.excludePatterns": {
           "type": "array",
@@ -126,77 +173,17 @@
             "**/node_modules/**",
             "**/.git/**"
           ],
-          "description": "Patterns to exclude from analysis"
+          "description": "%config.excludePatterns.description%"
         },
         "viewCharset.debugMode": {
           "type": "boolean",
           "default": false,
-          "description": "Enable debug mode for detailed logging"
+          "description": "%config.debugMode.description%"
         },
         "viewCharset.logToFile": {
           "type": "boolean",
           "default": false,
-          "description": "Enable logging to file"
-        }
-      }
-    },
-    "languages": [
-      {
-        "id": "viewCharset",
-        "extensions": [
-          ".txt",
-          ".csv",
-          ".json",
-          ".xml",
-          ".html",
-          ".css",
-          ".js",
-          ".ts",
-          ".md"
-        ],
-        "aliases": [
-          "View Charset",
-          "view-charset"
-        ],
-        "configuration": "./language-configuration.json"
-      }
-    ],
-    "configuration": {
-      "title": "View Charset",
-      "properties": {
-        "viewCharset.fileExtensions": {
-          "type": "array",
-          "default": [
-            "txt",
-            "csv",
-            "json",
-            "md",
-            "html",
-            "css",
-            "js",
-            "ts",
-            "jsx",
-            "tsx",
-            "xml",
-            "yaml",
-            "yml"
-          ],
-          "description": "文字コードを検出する対象のファイル拡張子"
-        },
-        "viewCharset.maxFileSize": {
-          "type": "number",
-          "default": 1024,
-          "description": "文字コードを検出する最大ファイルサイズ（KB）"
-        },
-        "viewCharset.cacheEnabled": {
-          "type": "boolean",
-          "default": true,
-          "description": "文字コードの検出結果をキャッシュするかどうか"
-        },
-        "viewCharset.cacheDuration": {
-          "type": "number",
-          "default": 3600,
-          "description": "キャッシュの有効期間（秒）"
+          "description": "%config.logToFile.description%"
         }
       }
     }
