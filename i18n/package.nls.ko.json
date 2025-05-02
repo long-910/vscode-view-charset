@@ -1,0 +1,13 @@
+{
+  "extension.displayName": "View Charset",
+  "extension.description": "파일의 문자 인코딩을 표시하는 확장 기능",
+  "command.openWebView": "View Charset WebView 열기",
+  "command.openFile": "파일 열기",
+  "config.fileExtensions.description": "문자 인코딩을 검출하기 위해 스캔할 파일 확장자",
+  "config.maxFileSize.description": "스캔할 최대 파일 크기 (KB)",
+  "config.cacheEnabled.description": "문자 인코딩 검출 결과를 캐시할지 여부",
+  "config.cacheDuration.description": "캐시 유효 기간 (초)",
+  "config.excludePatterns.description": "스캔에서 제외할 패턴",
+  "config.debugMode.description": "디버그 모드를 활성화하여 출력 채널에 상세 로그를 표시합니다",
+  "config.logToFile.description": "작업 영역 루트에 로그를 파일로 저장합니다"
+}

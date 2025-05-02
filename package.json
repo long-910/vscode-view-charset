@@ -1,9 +1,9 @@
 {
   "name": "vscode-view-charset",
-  "displayName": "View Charset",
-  "description": "Displays file character encodings in Tree View and Web View, helping to efficiently identify and resolve encoding-related issues.",
+  "displayName": "%extension.displayName%",
+  "description": "%extension.description%",
   "icon": "images/icon.png",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "publisher": "long-kudo",
   "repository": {
@@ -14,19 +14,19 @@
     "url": "https://github.com/long-910/vscode-view-charset/issues"
   },
   "engines": {
-    "vscode": "^1.75.0"
+    "vscode": "^1.85.0"
   },
   "categories": [
     "Other"
   ],
-  "main": "./out/extension.js",
+  "main": "./dist/extension.js",
   "activationEvents": [],
   "contributes": {
     "views": {
       "explorer": [
         {
           "id": "viewcharset",
-          "name": "View Charset",
+          "name": "%extension.displayName%",
           "icon": "images/viewcharset-icon.png"
         }
       ]
@@ -34,14 +34,18 @@
     "commands": [
       {
         "command": "viewcharset.openWebView",
-        "title": "Open View Charset Web View"
+        "title": "%command.openWebView%"
+      },
+      {
+        "command": "viewcharset.openFile",
+        "title": "%command.openFile%"
       }
     ],
     "localizations": [
       {
         "languageId": "zh-cn",
         "languageName": "Chinese (Simplified)",
-        "localizedLanguageName": "简体中文",
+        "localizedLanguageName": "中文(简体)",
         "translations": [
           {
             "id": "long-kudo.vscode-view-charset",
@@ -61,15 +65,100 @@
         ]
       },
       {
-        "languageId": "en",
-        "languageName": "English",
-        "localizedLanguageName": "English",
+        "languageId": "zh-tw",
+        "languageName": "Chinese (Traditional)",
+        "localizedLanguageName": "中文(繁體)",
         "translations": [
           {
             "id": "long-kudo.vscode-view-charset",
-            "path": "./i18n/package.nls.json"
+            "path": "./i18n/package.nls.zh-tw.json"
           }
         ]
+      },
+      {
+        "languageId": "ko",
+        "languageName": "Korean",
+        "localizedLanguageName": "한국어",
+        "translations": [
+          {
+            "id": "long-kudo.vscode-view-charset",
+            "path": "./i18n/package.nls.ko.json"
+          }
+        ]
+      }
+    ],
+    "configuration": {
+      "title": "View Charset",
+      "properties": {
+        "viewCharset.fileExtensions": {
+          "type": "array",
+          "default": [
+            "txt",
+            "csv",
+            "json",
+            "xml",
+            "html",
+            "css",
+            "js",
+            "ts",
+            "md"
+          ],
+          "description": "File extensions to analyze for character encoding"
+        },
+        "viewCharset.maxFileSize": {
+          "type": "number",
+          "default": 1024,
+          "description": "Maximum file size in KB to analyze"
+        },
+        "viewCharset.cacheEnabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable caching of character encoding results"
+        },
+        "viewCharset.cacheDuration": {
+          "type": "number",
+          "default": 3600,
+          "description": "Cache duration in seconds"
+        },
+        "viewCharset.excludePatterns": {
+          "type": "array",
+          "default": [
+            "**/node_modules/**",
+            "**/.git/**"
+          ],
+          "description": "Patterns to exclude from analysis"
+        },
+        "viewCharset.debugMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable debug mode for detailed logging"
+        },
+        "viewCharset.logToFile": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable logging to file"
+        }
+      }
+    },
+    "languages": [
+      {
+        "id": "viewCharset",
+        "extensions": [
+          ".txt",
+          ".csv",
+          ".json",
+          ".xml",
+          ".html",
+          ".css",
+          ".js",
+          ".ts",
+          ".md"
+        ],
+        "aliases": [
+          "View Charset",
+          "view-charset"
+        ],
+        "configuration": "./language-configuration.json"
       }
     ],
     "configuration": {
@@ -113,34 +202,44 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "vscode:prepublish": "npm run package",
+    "compile": "tsc -p ./ && npm run nls",
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test:coveralls": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "nls": "npx vscode-nls-dev compile --verbose -i ./i18n/package.nls.default.json -o ./package.nls.json ./i18n/package.nls.ja.json ./i18n/package.nls.zh-cn.json ./i18n/package.nls.zh-tw.json ./i18n/package.nls.ko.json",
+    "package": "webpack --mode production && npm run nls",
+    "watch:webpack": "webpack --mode development --watch"
   },
   "devDependencies": {
     "@types/encoding-japanese": "^2.2.1",
-    "@types/glob": "^7.1.3",
-    "@types/mocha": "^8.0.4",
-    "@types/node": "^12.11.7",
-    "@types/vscode": "^1.53.0",
-    "@typescript-eslint/eslint-plugin": "^4.14.1",
-    "@typescript-eslint/parser": "^4.14.1",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.85.0",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "copy-webpack-plugin": "^13.0.0",
     "coveralls": "^3.1.0",
-    "eslint": "^7.19.0",
-    "glob": "^7.1.6",
+    "eslint": "^8.56.0",
+    "glob": "^10.3.10",
     "jest": "^29.7.0",
-    "mocha": "^11.1.0",
-    "typescript": "^4.1.3",
-    "vscode-test": "^1.5.0"
+    "mocha": "^10.2.0",
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.3.2",
+    "vscode-nls-dev": "^4.0.4",
+    "vscode-test": "^1.6.1",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
     "encoding-japanese": "^1.0.30",
-    "vscode-nls": "^5.2.0"
+    "vscode-nls": "^5.2.0",
+    "winston": "^3.11.0"
   }
 }

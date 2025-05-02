@@ -1,5 +1,22 @@
 {
   "extension.displayName": "View Charset",
   "extension.description": "ファイルの文字コードを表示する拡張機能",
-  "command.openWebView": "View Charset Web ビューを開く"
+  "command.openWebView": "View Charset WebViewを開く",
+  "command.openFile": "ファイルを開く",
+  "config.fileExtensions.description": "文字コードを検出する対象のファイル拡張子",
+  "config.maxFileSize.description": "文字コードを検出する最大ファイルサイズ（KB）",
+  "config.cacheEnabled.description": "文字コードの検出結果をキャッシュするかどうか",
+  "config.cacheDuration.description": "キャッシュの有効期間（秒）",
+  "config.excludePatterns.description": "スキャンから除外するパターン",
+  "config.debugMode.description": "デバッグモードを有効にして、出力チャンネルに詳細なログを表示します",
+  "config.logToFile.description": "ワークスペースのルートにログをファイルとして保存します",
+  "progress.title": "文字コードを検出中...",
+  "webview.title": "View Charset - Webビュー",
+  "webview.description": "ワークスペース内のファイルとその文字コードを表示します。",
+  "webview.filename": "ファイル名",
+  "webview.charset": "文字コード",
+  "command.openFile.error.notFound": "ファイルが見つかりません",
+  "command.openFile.success": "ファイルを開きました: {0}",
+  "command.openFile.error.general": "ファイルを開けませんでした",
+  "error.activate": "View Charset 拡張機能の有効化に失敗しました。エラー: {0}"
 }

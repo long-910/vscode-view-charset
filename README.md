@@ -6,147 +6,162 @@
 [![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo/vscode-view-charset/test_coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo/vscode-view-charset&utm_campaign=Badge_Grade_Settings)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo.vscode-view-charset/test_coverage)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo.vscode-view-charset&utm_campaign=Badge_Grade_Settings)
 
-## 概要
+<div align="center">
 
-**View Charset**は、Visual Studio Code の拡張機能で、ワークスペース内のファイルの文字コードをツリービューおよび Web ビューで表示します。  
-この拡張機能を使用することで、ファイルの文字コードを簡単に確認し、エンコーディングに関連する問題を特定できます。
+## 🌐 Language Selection / 言語選択 / 语言选择 / 語言選擇 / 언어 선택
 
----
+| [🇺🇸 English](README.md) | [🇯🇵 日本語](README.ja.md) | [🇨🇳 简体中文](README.zh-cn.md) | [🇹🇼 繁體中文](README.zh-tw.md) | [🇰🇷 한국어](README.ko.md) |
+| ----------------------- | ------------------------- | ------------------------------ | ------------------------------ | ------------------------- |
 
-## 主な機能
+</div>
 
-- **ツリービューでの文字コード表示**  
-  エクスプローラー内にカスタムビュー「View Charset」を追加し、ワークスペース内のファイルとその文字コードを一覧表示します。
+## Overview
 
-![view](https://user-images.githubusercontent.com/69529926/109342067-a9012800-78ae-11eb-9ee8-1f7431d376c1.png)
+**View Charset** is a Visual Studio Code extension that displays the character encoding of files in your workspace in both tree view and web view.  
+With this extension, you can easily check the character encoding of files and identify encoding-related issues.
 
-- **Web ビューでの詳細表示**  
-  コマンドを実行して、Web ビューでファイル名と文字コードをリッチな UI で確認できます。
+## Features
 
----
+- **Character Encoding Display**
 
-## インストール
+  - Tree View: Lists files and their character encodings in the explorer
+  - Web View: Rich UI display of file names and character encodings
+  - Multi-language support (English, Japanese, Chinese, Korean)
 
-1. このリポジトリをクローンします:
+- **Advanced Features**
+  - Configurable file extensions and exclude patterns
+  - Caching of character encoding detection results
+  - Detailed logging for debugging
+  - Progress display for processing status
+
+## Installation
+
+1. Clone this repository:
 
    ```bash
    git clone https://github.com/long-910/vscode-view-charset.git
    ```
 
-2. 必要な依存関係をインストールします:
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-3. Visual Studio Code で拡張機能をデバッグモードで起動します:
+3. Build the extension:
 
    ```bash
    npm run compile
    ```
 
-4. F5 キーを押して拡張機能を起動します。
+4. Press F5 to start debugging in VS Code.
 
----
+## Usage
 
-## 使用方法
+### Viewing Character Encodings
 
-1. **ツリービューでの確認**:
+1. **In Tree View**:
 
-   - Visual Studio Code のエクスプローラーに「View Charset」ビューが表示されます。
-   - ワークスペース内のファイルとその文字コードが一覧表示されます。
+   - The "View Charset" view appears in the VS Code explorer
+   - Files and their character encodings are listed
 
-2. **Web ビューでの確認**:
-   - コマンドパレット（`Ctrl+Shift+P`）を開き、「`Open View Charset Web View`」を実行します。
-   - Web ビューにファイル名と文字コードが表示されます。
+2. **In Web View**:
+   - Open the command palette (`Ctrl+Shift+P`)
+   - Execute "`Open View Charset Web View`"
 
-3. **設定のカスタマイズ**:
-   - VS Codeの設定（`Ctrl+,`）から「View Charset」の設定を変更できます。
-   - 以下の設定項目が利用可能です：
+### Configuration
 
-     | 設定項目 | 説明 | デフォルト値 |
-     |---------|------|------------|
-     | `viewCharset.fileExtensions` | 文字コードを検出する対象のファイル拡張子 | `["txt", "csv", "json", "md", "html", "css", "js", "ts", "jsx", "tsx", "xml", "yaml", "yml"]` |
-     | `viewCharset.maxFileSize` | 文字コードを検出する最大ファイルサイズ（KB） | `1024` |
-     | `viewCharset.cacheEnabled` | 文字コードの検出結果をキャッシュするかどうか | `true` |
-     | `viewCharset.cacheDuration` | キャッシュの有効期間（秒） | `3600` |
+Configure the extension through VS Code settings (`Ctrl+,`):
 
-   - 設定を変更すると、自動的にキャッシュがクリアされ、新しい設定でTree Viewが更新されます。
+```json
+{
+  "viewCharset.fileExtensions": [
+    ".txt",
+    ".csv",
+    ".tsv",
+    ".json",
+    ".xml",
+    ".html",
+    ".css",
+    ".js",
+    ".ts"
+  ],
+  "viewCharset.excludePatterns": ["**/node_modules/**", "**/.git/**"],
+  "viewCharset.maxFileSize": 1024,
+  "viewCharset.cacheDuration": 3600,
+  "viewCharset.cacheEnabled": true,
+  "viewCharset.debugMode": false,
+  "viewCharset.logToFile": false
+}
+```
 
----
+#### Settings Details
 
-## 開発者向け情報
+| Setting                       | Description                 | Default                                |
+| ----------------------------- | --------------------------- | -------------------------------------- |
+| `viewCharset.fileExtensions`  | File extensions to process  | Various text files                     |
+| `viewCharset.excludePatterns` | Glob patterns to exclude    | `["**/node_modules/**", "**/.git/**"]` |
+| `viewCharset.maxFileSize`     | Maximum file size (KB)      | `1024`                                 |
+| `viewCharset.cacheDuration`   | Cache duration (seconds)    | `3600`                                 |
+| `viewCharset.cacheEnabled`    | Enable/disable caching      | `true`                                 |
+| `viewCharset.debugMode`       | Enable/disable debug mode   | `false`                                |
+| `viewCharset.logToFile`       | Enable/disable file logging | `false`                                |
 
-### スクリプト
+### Logging
 
-- **ビルド**:
+The extension provides detailed logging:
 
-  ```bash
-  npm run compile
-  ```
+- **Console Logging**: Always enabled (visible in Developer Tools)
+- **File Logging**: Enabled via `viewCharset.logToFile`
+  - Location: `{workspaceRoot}/view-charset.log`
+  - Log Level: Controlled by `viewCharset.debugMode`
+    - Debug: Detailed logs
+    - Info: Basic logs
 
-- **ウォッチモードでのビルド**:
+## Development
 
-  ```bash
-  npm run watch
-  ```
-
-- **Lint チェック**:
-
-  ```bash
-  npm run lint
-  ```
-
-- **テスト**:
-  ```bash
-  npm test
-  ```
-
-### ディレクトリ構成
+### Project Structure
 
 ```
 vscode-view-charset/
 ├── src/
-│   ├── extension.ts          # 拡張機能のエントリポイント
-│   ├── TreeDataProvider.ts   # ツリービューのデータプロバイダー
-│   ├── logger.ts             # ログ管理
+│   ├── extension.ts          # Extension entry point
+│   ├── TreeDataProvider.ts   # Tree view data provider
+│   ├── logger.ts             # Log management
 ├── images/
-│   ├── icon.png              # 拡張機能のアイコン
-│   ├── viewcharset-icon.png  # ツリービューのアイコン
-├── package.json              # 拡張機能の設定
-├── tsconfig.json             # TypeScript設定
-├── README.md                 # このファイル
+│   ├── icon.png              # Extension icon
+│   ├── viewcharset-icon.png  # Tree view icon
+├── package.json              # Extension settings
+├── tsconfig.json             # TypeScript settings
 ```
 
----
+### Development Scripts
 
-## 貢献
+- **Build**: `npm run compile`
+- **Watch Mode**: `npm run watch`
+- **Lint**: `npm run lint`
+- **Test**: `npm test`
 
-このプロジェクトへの貢献を歓迎します！以下の手順で貢献できます：
+## Contributing
 
-1. このリポジトリをフォークします。
-2. 新しいブランチを作成します:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. 変更をコミットします:
-   ```bash
-   git commit -m "Add your feature description"
-   ```
-4. プルリクエストを作成します。
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/your-feature`
+3. Commit changes: `git commit -m "Add your feature"`
+4. Push to the branch: `git push origin feature/your-feature`
+5. Create a Pull Request
 
----
+## License
 
-## ライセンス
+This project is licensed under the [MIT License](LICENSE).
 
-このプロジェクトは[MIT ライセンス](LICENSE)の下で提供されています。
-
----
-
-## 作者
+## Author
 
 - **long-910**  
   GitHub: [long-910](https://github.com/long-910)
+
+## Release Notes
+
+See [CHANGELOG.md](CHANGELOG.md) for details.
