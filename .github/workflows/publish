@@ -1,2 +1,0 @@
-- name: Publish VS Code Extension
-  uses: HaaLeo/publish-vscode-extension@v2
