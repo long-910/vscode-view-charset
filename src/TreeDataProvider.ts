@@ -32,6 +32,7 @@ export class CharsetTreeDataProvider
 
   async getChildren(element?: FileItem): Promise<FileItem[]> {
     if (!vscode.workspace.workspaceFolders) {
+      this.logger.debug("No workspace folders found");
       return [];
     }
 
@@ -66,13 +67,17 @@ export class CharsetTreeDataProvider
     const fileExtensions = config.get<string[]>("fileExtensions", [
       ".txt",
       ".csv",
-      ".tsv",
       ".json",
       ".xml",
       ".html",
       ".css",
       ".js",
       ".ts",
+      ".md",
+      ".jsx",
+      ".tsx",
+      ".yaml",
+      ".yml"
     ]);
     const excludePatterns = config.get<string[]>("excludePatterns", [
       "**/node_modules/**",
@@ -86,51 +91,44 @@ export class CharsetTreeDataProvider
     });
 
     try {
-      // 各拡張子ごとにファイルを検索
-      for (const ext of fileExtensions) {
-        const pattern = `**/*${ext}`;
-        const exclude = `{${excludePatterns.join(",")}}`;
+      // すべての拡張子を一度に検索
+      const pattern = `**/*{${fileExtensions.join(",")}}`;
+      const exclude = `{${excludePatterns.join(",")}}`;
 
-        this.logger.debug("Searching for files", {
-          pattern,
-          exclude,
-          extension: ext,
-        });
-        const uris = await vscode.workspace.findFiles(pattern, exclude);
-        this.logger.debug(`Found ${ext} files`, {
-          count: uris.length,
-          files: uris.map((uri) => uri.fsPath),
+      this.logger.debug("Searching for files", {
+        pattern,
+        exclude,
+      });
+
+      const uris = await vscode.workspace.findFiles(pattern, exclude);
+      this.logger.debug("Found files", {
+        count: uris.length,
+      });
+
+      for (const uri of uris) {
+        const filePath = uri.fsPath;
+        this.logger.debug("Processing file", {
+          filePath,
+          exists: fs.existsSync(filePath),
         });
 
-        for (const uri of uris) {
-          const filePath = uri.fsPath;
-          this.logger.debug("Processing file", {
-            filePath,
-            extension: ext,
-            exists: fs.existsSync(filePath),
+        if (this.charsetDetector.shouldProcessFile(filePath)) {
+          const relativePath = path.relative(workspaceFolder, filePath);
+          files.push(relativePath);
+          this.logger.debug("Added file", {
+            file: relativePath,
+            absolutePath: filePath,
           });
-
-          if (this.charsetDetector.shouldProcessFile(filePath)) {
-            const relativePath = path.relative(workspaceFolder, filePath);
-            files.push(relativePath);
-            this.logger.debug("Added file", {
-              file: relativePath,
-              extension: ext,
-              absolutePath: filePath,
-            });
-          } else {
-            this.logger.debug("Skipped file", {
-              file: filePath,
-              extension: ext,
-              reason: "shouldProcessFile returned false",
-            });
-          }
+        } else {
+          this.logger.debug("Skipped file", {
+            file: filePath,
+            reason: "shouldProcessFile returned false",
+          });
         }
       }
 
       this.logger.debug("Processed files summary", {
         total: files.length,
-        extensions: fileExtensions,
         files: files,
         workspaceFolder,
       });
