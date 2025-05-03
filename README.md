@@ -32,10 +32,12 @@ With this extension, you can easily check the character encoding of files and id
   - Multi-language support (English, Japanese, Chinese, Korean)
 
 - **Advanced Features**
+
   - Configurable file extensions and exclude patterns
   - Caching of character encoding detection results
   - Detailed logging for debugging
   - Progress display for processing status
+  - CSV export functionality from WebView interface
 
 ## Installation
 
@@ -71,6 +73,8 @@ With this extension, you can easily check the character encoding of files and id
 2. **In Web View**:
    - Open the command palette (`Ctrl+Shift+P`)
    - Execute "`Open View Charset Web View`"
+   - Click the "Export to CSV" button to export file encoding information
+   - CSV export includes separate columns for path, filename, and encoding
 
 ### Configuration
 

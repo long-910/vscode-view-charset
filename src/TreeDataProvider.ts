@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as path from "path";
 import * as fs from "fs";
-import { CharsetDetector } from "./extension";
+import { CharsetDetector } from "./charsetDetector";
 import { Logger } from "./logger";
 
 export class CharsetTreeDataProvider
@@ -142,6 +142,19 @@ export class CharsetTreeDataProvider
     }
 
     return files;
+  }
+
+  public shouldProcessFile(filePath: string): boolean {
+    const config = vscode.workspace.getConfiguration("viewCharset");
+    const maxFileSize = config.get<number>("maxFileSize", 1024) * 1024; // Convert KB to bytes
+
+    try {
+      const stats = fs.statSync(filePath);
+      return stats.size <= maxFileSize;
+    } catch (error) {
+      this.logger.error("Error checking file size", { filePath, error });
+      return false;
+    }
   }
 }
 
