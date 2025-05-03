@@ -3,7 +3,7 @@
   "displayName": "%extension.displayName%",
   "description": "%extension.description%",
   "icon": "images/icon.png",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "publisher": "long-kudo",
   "repository": {
@@ -34,7 +34,8 @@
     "commands": [
       {
         "command": "viewcharset.openWebView",
-        "title": "%command.openWebView%"
+        "title": "%command.openWebView%",
+        "category": "View Charset"
       },
       {
         "command": "viewcharset.openFile",

@@ -2,6 +2,19 @@
 
 All notable changes to the "View Charset" extension will be documented in this file.
 
+## [0.1.3] - 2025-05-03
+
+### Added
+
+- Added CSV export functionality to WebView interface
+- Added separate columns for path, filename, and encoding in CSV export
+- Improved file path handling in CSV export
+
+### Changed
+
+- Updated WebView interface to support CSV export
+- Enhanced file information display in WebView
+
 ## [0.1.2] - 2025-05-02
 
 ### Added
