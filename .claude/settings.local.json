@@ -6,7 +6,8 @@
       "Bash(npm run compile:*)",
       "Bash(npm run lint:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }
