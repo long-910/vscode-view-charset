@@ -209,17 +209,24 @@ suite('Extension Test Suite', () => {
       }
     });
 
-    test('getChildren() returns FileItem elements when workspace has files', async () => {
+    test('getChildren() returns TreeItem elements (folders or files) when workspace has files', async () => {
       if (!vscode.workspace.workspaceFolders?.length) {
         // Skip if no workspace; tested via getWorkspaceFiles above
         return;
       }
       const provider = new CharsetTreeDataProvider();
       const children = await provider.getChildren();
-      // Each child should be a TreeItem with a label and description (charset)
+      // Root children can be FolderItem (Collapsed) or FileItem (None)
       for (const child of children) {
         assert.ok(child instanceof vscode.TreeItem);
-        assert.ok(child.description !== undefined, 'child should have description (charset)');
+        // FileItem has collapsibleState None and carries a charset description
+        // FolderItem has collapsibleState Collapsed
+        const isFile = child.collapsibleState === vscode.TreeItemCollapsibleState.None;
+        const isFolder = child.collapsibleState === vscode.TreeItemCollapsibleState.Collapsed;
+        assert.ok(isFile || isFolder, 'child should be either a file or folder item');
+        if (isFile) {
+          assert.ok(child.description !== undefined, 'file item should have charset description');
+        }
       }
     });
   });
