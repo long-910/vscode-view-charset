@@ -2,6 +2,20 @@
 
 All notable changes to the "View Charset" extension will be documented in this file.
 
+## [0.1.5] - 2026-02-21
+
+### Changed
+
+- Replaced `winston` logger with a lightweight custom implementation using only built-in Node.js `fs` and VS Code API
+  - Removed 26 transitive dependencies
+  - Fixed trailing space in log messages when no metadata is provided
+  - Fixed `Error` objects being serialized as `{}` — `message` and `stack` are now included
+  - Fixed `Logger.instance` not being reset after `dispose()`, preventing stale instance reuse on re-activation
+
+### Fixed
+
+- Added `.claude/settings.local.json` to `.gitignore` (per-developer local settings should not be version-controlled)
+
 ## [0.1.4] - 2026-02-20
 
 ### Added
