@@ -2,7 +2,7 @@
 
 [![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)  
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
@@ -20,15 +20,15 @@
 
 ## Overview
 
-**View Charset** is a Visual Studio Code extension that displays the character encoding of files in your workspace in both tree view and web view.  
+**View Charset** is a Visual Studio Code extension that displays the character encoding of files in your workspace in both tree view and web view.
 With this extension, you can easily check the character encoding of files and identify encoding-related issues.
 
 ## Features
 
 - **Character Encoding Display**
 
-  - Tree View: Lists files and their character encodings in the explorer
-  - Web View: Rich UI display of file names and character encodings
+  - Tree View: Displays files and their character encodings in a **folder tree** that mirrors your workspace directory structure — folders are collapsible, files show the detected charset as a description
+  - Web View: Rich UI table of file paths and character encodings with search/filter and sort
   - Multi-language support (English, Japanese, Chinese, Korean)
 
 - **Advanced Features**
@@ -36,7 +36,6 @@ With this extension, you can easily check the character encoding of files and id
   - Configurable file extensions and exclude patterns
   - Caching of character encoding detection results
   - Detailed logging for debugging
-  - Progress display for processing status
   - CSV export functionality from WebView interface
 
 ## Installation
@@ -67,14 +66,17 @@ With this extension, you can easily check the character encoding of files and id
 
 1. **In Tree View**:
 
-   - The "View Charset" view appears in the VS Code explorer
-   - Files and their character encodings are listed
+   - The "View Charset" view appears in the VS Code explorer sidebar
+   - Your workspace directory structure is shown as a collapsible folder tree
+   - Each file displays its detected character encoding as the item description
+   - Click a folder to expand or collapse it
 
 2. **In Web View**:
    - Open the command palette (`Ctrl+Shift+P`)
    - Execute "`Open View Charset Web View`"
-   - Click the "Export to CSV" button to export file encoding information
-   - CSV export includes separate columns for path, filename, and encoding
+   - Use the search box to filter by file path or encoding name
+   - Click column headers to sort by path or encoding
+   - Click the "Export to CSV" button to export the full list (includes path, filename, and encoding columns)
 
 ### Configuration
 
@@ -132,22 +134,36 @@ The extension provides detailed logging:
 ```
 vscode-view-charset/
 ├── src/
-│   ├── extension.ts          # Extension entry point
-│   ├── TreeDataProvider.ts   # Tree view data provider
-│   ├── logger.ts             # Log management
+│   ├── extension.ts          # Extension entry point; command registration, event listeners, CacheManager
+│   ├── charsetDetector.ts    # Character encoding detection (encoding-japanese, singleton)
+│   ├── TreeDataProvider.ts   # Explorer Tree View; folder hierarchy + charset labels
+│   ├── webview.ts            # WebView panel; table UI, search/sort, CSV export
+│   ├── logger.ts             # Winston-based logger (singleton); console + output channel
+│   └── test/
+│       ├── runTest.ts        # Integration test runner (vscode-test)
+│       ├── fixtures/         # Sample files used as test workspace
+│       └── suite/
+│           └── extension.test.ts  # Mocha test suite (28 tests)
+├── i18n/                     # NLS translation files (en, ja, zh-cn, zh-tw, ko)
 ├── images/
 │   ├── icon.png              # Extension icon
-│   ├── viewcharset-icon.png  # Tree view icon
-├── package.json              # Extension settings
-├── tsconfig.json             # TypeScript settings
+│   └── viewcharset-icon.png  # Tree view icon
+├── package.json              # Extension manifest
+└── tsconfig.json             # TypeScript settings
 ```
 
 ### Development Scripts
 
-- **Build**: `npm run compile`
-- **Watch Mode**: `npm run watch`
-- **Lint**: `npm run lint`
-- **Test**: `npm test`
+| Command               | Description                          |
+| --------------------- | ------------------------------------ |
+| `npm run compile`     | TypeScript build + NLS generation    |
+| `npm run watch`       | TypeScript watch build               |
+| `npm run watch:webpack` | Webpack watch build                |
+| `npm run lint`        | ESLint check                         |
+| `npm test`            | Full test run (compile → lint → mocha) |
+| `npm run package`     | Production build (webpack + NLS)     |
+
+Press **F5** in VS Code to launch the Extension Development Host for manual testing.
 
 ## Contributing
 
@@ -163,7 +179,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Author
 
-- **long-910**  
+- **long-910**
   GitHub: [long-910](https://github.com/long-910)
 
 ## Release Notes

@@ -2,7 +2,7 @@
 
 [![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)  
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
@@ -20,15 +20,15 @@
 
 ## 개요
 
-**View Charset**은 Visual Studio Code 확장 프로그램으로, 작업 공간의 파일 문자 인코딩을 트리 뷰와 웹 뷰에서 표시합니다.  
+**View Charset**은 Visual Studio Code 확장 프로그램으로, 작업 공간의 파일 문자 인코딩을 트리 뷰와 웹 뷰에서 표시합니다.
 이 확장 프로그램을 사용하면 파일의 문자 인코딩을 쉽게 확인하고 인코딩 관련 문제를 식별할 수 있습니다.
 
 ## 기능
 
 - **문자 인코딩 표시**
 
-  - 트리 뷰: 탐색기에 파일과 문자 인코딩을 표시
-  - 웹 뷰: 파일 이름과 문자 인코딩을 리치 UI로 표시
+  - 트리 뷰：**작업 공간 디렉터리 구조를 그대로 반영한 폴더 트리 형식**으로 파일과 문자 인코딩을 표시합니다. 폴더는 접기/펼치기가 가능하며, 파일 옆에는 감지된 문자 인코딩이 표시됩니다
+  - 웹 뷰：파일 경로와 문자 인코딩을 풍부한 테이블 UI로 표시합니다. 검색/필터 및 정렬 기능을 제공합니다
   - 다국어 지원 (영어, 일본어, 중국어, 한국어)
 
 - **고급 기능**
@@ -36,7 +36,6 @@
   - 설정 가능한 파일 확장자와 제외 패턴
   - 문자 인코딩 감지 결과의 캐시
   - 디버깅을 위한 상세 로그
-  - 처리 진행 상황 표시
   - 웹 뷰에서의 CSV 내보내기 기능
 
 ## 설치
@@ -67,14 +66,17 @@
 
 1. **트리 뷰에서**:
 
-   - VS Code 탐색기에 "View Charset" 뷰가 표시됩니다
-   - 파일과 문자 인코딩이 목록으로 표시됩니다
+   - VS Code 탐색기 사이드바에 "View Charset" 뷰가 표시됩니다
+   - 작업 공간 디렉터리 구조가 접기/펼치기 가능한 폴더 트리로 표시됩니다
+   - 각 파일 옆에 감지된 문자 인코딩이 표시됩니다
+   - 폴더를 클릭하면 펼치거나 접을 수 있습니다
 
 2. **웹 뷰에서**:
    - 명령 팔레트를 엽니다 (`Ctrl+Shift+P`)
    - "`Open View Charset Web View`"를 실행합니다
-   - "Export to CSV" 버튼을 클릭하여 파일의 문자 인코딩 정보를 내보냅니다
-   - CSV 내보내기에는 경로, 파일 이름, 문자 인코딩 열이 포함됩니다
+   - 검색 상자로 파일 경로나 인코딩 이름으로 필터링
+   - 열 헤더를 클릭하여 경로 또는 인코딩으로 정렬
+   - "Export to CSV" 버튼을 클릭하여 전체 목록을 내보냅니다（경로, 파일명, 인코딩 열 포함）
 
 ### 설정
 
@@ -132,22 +134,36 @@ VS Code 설정 (`Ctrl+,`)에서 확장 프로그램을 구성:
 ```
 vscode-view-charset/
 ├── src/
-│   ├── extension.ts          # 확장 프로그램 진입점
-│   ├── TreeDataProvider.ts   # 트리 뷰 데이터 제공자
-│   ├── logger.ts             # 로그 관리
+│   ├── extension.ts          # 진입점. 명령 등록, 이벤트 감지, CacheManager
+│   ├── charsetDetector.ts    # 문자 인코딩 감지（encoding-japanese, 싱글톤）
+│   ├── TreeDataProvider.ts   # 탐색기 트리 뷰. 폴더 계층 + 인코딩 레이블
+│   ├── webview.ts            # WebView 패널. 테이블 UI, 검색/정렬, CSV 내보내기
+│   ├── logger.ts             # winston 기반 로거（싱글톤）. 콘솔 + 출력 채널
+│   └── test/
+│       ├── runTest.ts        # 통합 테스트 실행기（vscode-test）
+│       ├── fixtures/         # 테스트 워크스페이스용 샘플 파일
+│       └── suite/
+│           └── extension.test.ts  # Mocha 테스트 스위트（28개 테스트）
+├── i18n/                     # NLS 번역 파일（en, ja, zh-cn, zh-tw, ko）
 ├── images/
 │   ├── icon.png              # 확장 프로그램 아이콘
-│   ├── viewcharset-icon.png  # 트리 뷰 아이콘
-├── package.json              # 확장 프로그램 설정
-├── tsconfig.json             # TypeScript 설정
+│   └── viewcharset-icon.png  # 트리 뷰 아이콘
+├── package.json              # 확장 프로그램 매니페스트
+└── tsconfig.json             # TypeScript 설정
 ```
 
 ### 개발 스크립트
 
-- **빌드**: `npm run compile`
-- **감시 모드**: `npm run watch`
-- **Lint**: `npm run lint`
-- **테스트**: `npm test`
+| 명령                    | 설명                                     |
+| ----------------------- | ---------------------------------------- |
+| `npm run compile`       | TypeScript 빌드 + NLS 생성               |
+| `npm run watch`         | TypeScript 감시 빌드                     |
+| `npm run watch:webpack` | Webpack 감시 빌드                        |
+| `npm run lint`          | ESLint 검사                              |
+| `npm test`              | 전체 테스트 실행（compile → lint → mocha） |
+| `npm run package`       | 프로덕션 빌드（webpack + NLS）           |
+
+VS Code에서 **F5** 키를 눌러 Extension Development Host를 실행하여 수동 테스트를 진행할 수 있습니다.
 
 ## 기여
 
@@ -163,7 +179,7 @@ vscode-view-charset/
 
 ## 작성자
 
-- **long-910**  
+- **long-910**
   GitHub: [long-910](https://github.com/long-910)
 
 ## 릴리스 노트

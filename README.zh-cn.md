@@ -2,7 +2,7 @@
 
 [![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)  
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
@@ -20,23 +20,22 @@
 
 ## 概述
 
-**View Charset** 是一个 Visual Studio Code 扩展，可以在树形视图和网页视图中显示工作区文件的字符编码。  
+**View Charset** 是一个 Visual Studio Code 扩展，可以在树形视图和网页视图中显示工作区文件的字符编码。
 使用此扩展，您可以轻松检查文件的字符编码并识别与编码相关的问题。
 
 ## 功能
 
 - **字符编码显示**
 
-  - 树形视图：在资源管理器中列出文件和字符编码
-  - 网页视图：以丰富的 UI 显示文件名和字符编码
+  - 树形视图：以**与工作区目录结构完全一致的文件夹树形式**显示文件和字符编码。文件夹可折叠，文件旁边显示检测到的字符编码
+  - 网页视图：以丰富的表格 UI 显示文件路径和字符编码，支持搜索/过滤和排序
   - 多语言支持（英语、日语、中文、韩语）
 
 - **高级功能**
   - 可配置的文件扩展名和排除模式
   - 字符编码检测结果的缓存
   - 详细的调试日志输出
-  - 处理状态的进度显示
-  - Web 视图中的 CSV 导出功能
+  - 网页视图中的 CSV 导出功能
 
 ## 安装
 
@@ -66,14 +65,17 @@
 
 1. **在树形视图中查看**：
 
-   - VS Code 的资源管理器中显示 "View Charset" 视图
-   - 列出文件和字符编码
+   - VS Code 的资源管理器侧边栏中显示 "View Charset" 视图
+   - 工作区目录结构以可折叠的文件夹树形式显示
+   - 每个文件旁边显示检测到的字符编码
+   - 点击文件夹可展开或折叠
 
 2. **在网页视图中查看**：
    - 打开命令面板（`Ctrl+Shift+P`）
    - 执行 "`Open View Charset Web View`"
-   - 点击"Export to CSV"按钮导出文件字符编码信息
-   - CSV 导出包含路径、文件名和字符编码列
+   - 使用搜索框按文件路径或编码名称过滤
+   - 点击列标题按路径或编码排序
+   - 点击"Export to CSV"按钮导出完整列表（包含路径、文件名和字符编码列）
 
 ### 配置
 
@@ -131,22 +133,36 @@
 ```
 vscode-view-charset/
 ├── src/
-│   ├── extension.ts          # 扩展入口点
-│   ├── TreeDataProvider.ts   # 树形视图数据提供者
-│   ├── logger.ts             # 日志管理
+│   ├── extension.ts          # 入口点。命令注册、事件监听、CacheManager
+│   ├── charsetDetector.ts    # 字符编码检测（encoding-japanese，单例）
+│   ├── TreeDataProvider.ts   # 资源管理器树形视图。文件夹层级 + 字符编码标签
+│   ├── webview.ts            # WebView 面板。表格 UI、搜索/排序、CSV 导出
+│   ├── logger.ts             # 基于 winston 的日志记录器（单例）。控制台 + 输出频道
+│   └── test/
+│       ├── runTest.ts        # 集成测试运行器（vscode-test）
+│       ├── fixtures/         # 用于测试工作区的示例文件
+│       └── suite/
+│           └── extension.test.ts  # Mocha 测试套件（28 个测试）
+├── i18n/                     # NLS 翻译文件（en, ja, zh-cn, zh-tw, ko）
 ├── images/
 │   ├── icon.png              # 扩展图标
-│   ├── viewcharset-icon.png  # 树形视图图标
-├── package.json              # 扩展设置
-├── tsconfig.json             # TypeScript设置
+│   └── viewcharset-icon.png  # 树形视图图标
+├── package.json              # 扩展清单
+└── tsconfig.json             # TypeScript 设置
 ```
 
 ### 开发脚本
 
-- **构建**：`npm run compile`
-- **监视模式**：`npm run watch`
-- **Lint**：`npm run lint`
-- **测试**：`npm test`
+| 命令                    | 说明                               |
+| ----------------------- | ---------------------------------- |
+| `npm run compile`       | TypeScript 构建 + NLS 生成         |
+| `npm run watch`         | TypeScript 监视构建                |
+| `npm run watch:webpack` | Webpack 监视构建                   |
+| `npm run lint`          | ESLint 检查                        |
+| `npm test`              | 完整测试（compile → lint → mocha） |
+| `npm run package`       | 生产构建（webpack + NLS）          |
+
+在 VS Code 中按 **F5** 启动 Extension Development Host 进行手动测试。
 
 ## 贡献
 
@@ -162,7 +178,7 @@ vscode-view-charset/
 
 ## 作者
 
-- **long-910**  
+- **long-910**
   GitHub: [long-910](https://github.com/long-910)
 
 ## 发行说明

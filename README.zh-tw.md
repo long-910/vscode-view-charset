@@ -2,7 +2,7 @@
 
 [![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)  
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
@@ -20,22 +20,21 @@
 
 ## 概述
 
-**View Charset** 是一個 Visual Studio Code 擴充功能，可以在樹狀檢視和網頁檢視中顯示工作區檔案的字符編碼。  
-使用此擴充功能，您可以輕鬆檢查檔案的字符編碼並識別與編碼相關的問題。
+**View Charset** 是一個 Visual Studio Code 擴充功能，可以在樹狀檢視和網頁檢視中顯示工作區檔案的字元編碼。
+使用此擴充功能，您可以輕鬆檢查檔案的字元編碼並識別與編碼相關的問題。
 
 ## 功能
 
-- **字符編碼顯示**
+- **字元編碼顯示**
 
-  - 樹狀檢視：在檔案總管中列出檔案和字符編碼
-  - 網頁檢視：以豐富的 UI 顯示檔案名稱和字符編碼
+  - 樹狀檢視：以**與工作區目錄結構完全一致的資料夾樹狀形式**顯示檔案和字元編碼。資料夾可折疊，檔案旁顯示偵測到的字元編碼
+  - 網頁檢視：以豐富的表格 UI 顯示檔案路徑和字元編碼，支援搜尋/篩選和排序
   - 多語言支援（英語、日語、中文、韓語）
 
 - **進階功能**
   - 可設定的檔案副檔名和排除模式
-  - 字符編碼檢測結果的快取
+  - 字元編碼偵測結果的快取
   - 詳細的除錯日誌輸出
-  - 處理狀態的進度顯示
   - 網頁檢視中的 CSV 匯出功能
 
 ## 安裝
@@ -62,18 +61,21 @@
 
 ## 使用方法
 
-### 查看字符編碼
+### 查看字元編碼
 
 1. **在樹狀檢視中查看**：
 
-   - VS Code 的檔案總管中顯示 "View Charset" 檢視
-   - 列出檔案和字符編碼
+   - VS Code 的檔案總管側邊欄中顯示 "View Charset" 檢視
+   - 工作區目錄結構以可折疊的資料夾樹狀形式顯示
+   - 每個檔案旁顯示偵測到的字元編碼
+   - 點擊資料夾可展開或折疊
 
 2. **在網頁檢視中查看**：
    - 開啟命令選擇區（`Ctrl+Shift+P`）
    - 執行 "`Open View Charset Web View`"
-   - 點擊"Export to CSV"按鈕匯出檔案字符編碼資訊
-   - CSV 匯出包含路徑、檔案名稱和字符編碼欄位
+   - 使用搜尋框按檔案路徑或編碼名稱篩選
+   - 點擊欄位標題按路徑或編碼排序
+   - 點擊"Export to CSV"按鈕匯出完整清單（包含路徑、檔案名稱和字元編碼欄位）
 
 ### 設定
 
@@ -131,22 +133,36 @@
 ```
 vscode-view-charset/
 ├── src/
-│   ├── extension.ts          # 擴充功能入口點
-│   ├── TreeDataProvider.ts   # 樹狀檢視資料提供者
-│   ├── logger.ts             # 日誌管理
+│   ├── extension.ts          # 進入點。命令註冊、事件監聽、CacheManager
+│   ├── charsetDetector.ts    # 字元編碼偵測（encoding-japanese，單例）
+│   ├── TreeDataProvider.ts   # 檔案總管樹狀檢視。資料夾層級 + 字元編碼標籤
+│   ├── webview.ts            # WebView 面板。表格 UI、搜尋/排序、CSV 匯出
+│   ├── logger.ts             # 基於 winston 的日誌記錄器（單例）。控制台 + 輸出頻道
+│   └── test/
+│       ├── runTest.ts        # 整合測試執行器（vscode-test）
+│       ├── fixtures/         # 用於測試工作區的範例檔案
+│       └── suite/
+│           └── extension.test.ts  # Mocha 測試套件（28 個測試）
+├── i18n/                     # NLS 翻譯檔案（en, ja, zh-cn, zh-tw, ko）
 ├── images/
 │   ├── icon.png              # 擴充功能圖示
-│   ├── viewcharset-icon.png  # 樹狀檢視圖示
-├── package.json              # 擴充功能設定
-├── tsconfig.json             # TypeScript設定
+│   └── viewcharset-icon.png  # 樹狀檢視圖示
+├── package.json              # 擴充功能清單
+└── tsconfig.json             # TypeScript 設定
 ```
 
 ### 開發指令碼
 
-- **建置**：`npm run compile`
-- **監看模式**：`npm run watch`
-- **Lint**：`npm run lint`
-- **測試**：`npm test`
+| 指令                    | 說明                                   |
+| ----------------------- | -------------------------------------- |
+| `npm run compile`       | TypeScript 建置 + NLS 生成             |
+| `npm run watch`         | TypeScript 監看建置                    |
+| `npm run watch:webpack` | Webpack 監看建置                       |
+| `npm run lint`          | ESLint 檢查                            |
+| `npm test`              | 完整測試執行（compile → lint → mocha） |
+| `npm run package`       | 生產建置（webpack + NLS）              |
+
+在 VS Code 中按 **F5** 鍵啟動 Extension Development Host 進行手動測試。
 
 ## 貢獻
 
@@ -162,7 +178,7 @@ vscode-view-charset/
 
 ## 作者
 
-- **long-910**  
+- **long-910**
   GitHub: [long-910](https://github.com/long-910)
 
 ## 發行說明

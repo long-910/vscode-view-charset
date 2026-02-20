@@ -2,6 +2,35 @@
 
 All notable changes to the "View Charset" extension will be documented in this file.
 
+## [0.1.4] - 2026-02-20
+
+### Added
+
+- Tree View now displays files in a **hierarchical folder structure** that mirrors the workspace directory layout
+  - Folders appear as collapsible nodes with folder icons, sorted before files at each level
+  - Files within each folder are sorted alphabetically
+- Comprehensive integration test suite covering all major modules
+  - CharsetDetector: singleton, detectCharset, shouldProcessFile, detectWorkspaceFiles
+  - CharsetTreeDataProvider: refresh event, getChildren, getWorkspaceFiles, delegation
+  - Logger: singleton, debug/info/warn/error methods
+  - ViewCharsetWebview: construction, refresh without panel
+  - Configuration: all 7 settings validated for type and default values
+  - CacheManager: indirect test via configuration change event
+- Test fixtures directory (`src/test/fixtures/`) for integration tests
+- Test runner now opens fixtures directory as workspace with trust disabled
+
+### Changed
+
+- Tree View changed from a flat file list to a folder tree structure
+- Tree cache is built once per refresh cycle and reset on `refresh()` for performance
+- Improved project structure documentation in README files
+
+### Fixed
+
+- Fixed Service Worker `InvalidStateError` in WebView
+- Fixed various runtime bugs found during debug session
+- Fixed ESLint warnings: missing curly braces and naming convention
+
 ## [0.1.3] - 2025-05-03
 
 ### Added
