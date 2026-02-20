@@ -1,0 +1,3 @@
+Hello, World! ASCII sample file.
+This is a plain ASCII text file.
+No special characters here.

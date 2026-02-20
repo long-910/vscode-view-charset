@@ -39,7 +39,7 @@ class CacheManager {
 
   public get(filePath: string): string | null {
     const entry = this.cache.get(filePath);
-    if (!entry) return null;
+    if (!entry) { return null; }
 
     if (Date.now() - entry.timestamp > this.cacheDuration) {
       this.cache.delete(filePath);

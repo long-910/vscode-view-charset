@@ -251,6 +251,7 @@ export class ViewCharsetWebview {
   private async exportToCsv() {
     try {
       const uri = await vscode.window.showSaveDialog({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         filters: { 'CSV Files': ['csv'] },
         defaultUri: vscode.Uri.file('charset_export.csv')
       });
