@@ -37,18 +37,23 @@ export class CharsetDetector {
       const pattern = `**/*{${fileExtensions.join(',')}}`;
 
       const files = await vscode.workspace.findFiles(pattern, `{${excludePatterns.join(',')}}`);
-      const results: FileInfo[] = [];
 
-      for (const file of files) {
-        try {
-          const encoding = await this.detectCharset(file.fsPath);
-          const relativePath = path.relative(workspaceFolder, file.fsPath);
-          results.push({
-            path: relativePath,
-            encoding: encoding
-          });
-        } catch (error) {
-          this.logger.error('Failed to detect charset', { file: file.fsPath, error });
+      const settled = await Promise.allSettled(
+        files.map(async (file) => {
+          const enc = await this.detectCharset(file.fsPath);
+          return {
+            path: path.relative(workspaceFolder, file.fsPath),
+            encoding: enc,
+          };
+        })
+      );
+
+      const results: FileInfo[] = [];
+      for (const result of settled) {
+        if (result.status === 'fulfilled') {
+          results.push(result.value);
+        } else {
+          this.logger.error('Failed to detect charset', { error: result.reason });
         }
       }
 

@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
 import { CharsetDetector } from "./charsetDetector";
 
 interface FileInfo {
@@ -205,15 +204,13 @@ export class ViewCharsetWebview {
 
     function sortTable(col, asc) {
       const tbody = document.getElementById('tableBody');
-      const rows = Array.from(tbody.querySelectorAll('tr:not(.hidden)'));
-      const hiddenRows = Array.from(tbody.querySelectorAll('tr.hidden'));
-      rows.sort((a, b) => {
+      const allRows = Array.from(tbody.querySelectorAll('tr'));
+      allRows.sort((a, b) => {
         const aText = a.cells[col]?.textContent?.trim() ?? '';
         const bText = b.cells[col]?.textContent?.trim() ?? '';
         return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
       });
-      rows.forEach(r => tbody.appendChild(r));
-      hiddenRows.forEach(r => tbody.appendChild(r));
+      allRows.forEach(r => tbody.appendChild(r));
     }
 
     // Filter

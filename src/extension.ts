@@ -74,6 +74,7 @@ export function activate(context: vscode.ExtensionContext) {
     treeDataProvider,
     showCollapseAll: true,
   });
+  context.subscriptions.push(treeView);
 
   // コマンドの登録
   context.subscriptions.push(
