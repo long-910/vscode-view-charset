@@ -1,8 +1,6 @@
 import * as vscode from "vscode";
-import * as fs from "fs";
-import * as path from "path";
-import * as encoding from "encoding-japanese";
 import { CharsetTreeDataProvider } from "./TreeDataProvider";
+import { CharsetDetector } from "./charsetDetector";
 import * as nls from "vscode-nls";
 import { Logger } from "./logger";
 import { ViewCharsetWebview } from './webview';
@@ -67,7 +65,9 @@ export function activate(context: vscode.ExtensionContext) {
   logger.info("Activating View Charset extension");
 
   const treeDataProvider = new CharsetTreeDataProvider();
+  const charsetDetector = CharsetDetector.getInstance();
   let webview: ViewCharsetWebview | undefined;
+  let saveDebounceTimer: ReturnType<typeof setTimeout> | undefined;
 
   // ツリービューの登録
   const treeView = vscode.window.createTreeView("viewcharset", {
@@ -117,13 +117,18 @@ export function activate(context: vscode.ExtensionContext) {
     })
   );
 
-  // ファイル変更の監視
+  // ファイル変更の監視（デバウンス付き）
   context.subscriptions.push(
     vscode.workspace.onDidSaveTextDocument((document) => {
-      const charsetDetector = new CharsetTreeDataProvider();
       if (charsetDetector.shouldProcessFile(document.fileName)) {
-        treeDataProvider.refresh();
-        webview?.refresh();
+        if (saveDebounceTimer) {
+          clearTimeout(saveDebounceTimer);
+        }
+        saveDebounceTimer = setTimeout(() => {
+          treeDataProvider.refresh();
+          webview?.refresh();
+          saveDebounceTimer = undefined;
+        }, 500);
       }
     })
   );
@@ -134,4 +139,5 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {
   logger.info("Deactivating View Charset extension");
+  logger.dispose();
 }
