@@ -38,6 +38,9 @@ class CacheManager {
   }
 
   public get(filePath: string): string | null {
+    if (!vscode.workspace.getConfiguration('viewCharset').get<boolean>('cacheEnabled', true)) {
+      return null;
+    }
     const entry = this.cache.get(filePath);
     if (!entry) { return null; }
 
@@ -50,6 +53,9 @@ class CacheManager {
   }
 
   public set(filePath: string, charset: string): void {
+    if (!vscode.workspace.getConfiguration('viewCharset').get<boolean>('cacheEnabled', true)) {
+      return;
+    }
     this.cache.set(filePath, {
       charset,
       timestamp: Date.now(),
@@ -75,6 +81,28 @@ export function activate(context: vscode.ExtensionContext) {
     showCollapseAll: true,
   });
   context.subscriptions.push(treeView);
+
+  // ステータスバー
+  const statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right, 100
+  );
+  statusBarItem.command = 'viewcharset.openWebView';
+  context.subscriptions.push(statusBarItem);
+
+  async function updateStatusBar(editor?: vscode.TextEditor) {
+    if (!editor || editor.document.uri.scheme !== 'file') { statusBarItem.hide(); return; }
+    if (!charsetDetector.shouldProcessFile(editor.document.uri.fsPath)) { statusBarItem.hide(); return; }
+    const info = await charsetDetector.detectSingleFileInfo(editor.document.uri.fsPath);
+    const display = info.hasBOM ? `${info.encoding} BOM` : info.encoding;
+    statusBarItem.text = `$(symbol-text) ${display}`;
+    statusBarItem.tooltip = `${display} / ${info.lineEnding}`;
+    statusBarItem.show();
+  }
+
+  context.subscriptions.push(
+    vscode.window.onDidChangeActiveTextEditor(updateStatusBar)
+  );
+  updateStatusBar(vscode.window.activeTextEditor);
 
   // コマンドの登録
   context.subscriptions.push(
@@ -104,7 +132,15 @@ export function activate(context: vscode.ExtensionContext) {
           );
         }
       }
-    )
+    ),
+    vscode.commands.registerCommand('viewcharset.copyCharset', async (item) => {
+      const charset = typeof item?.description === 'string' ? item.description : '';
+      if (!charset) { return; }
+      await vscode.env.clipboard.writeText(charset);
+      vscode.window.showInformationMessage(
+        localize('command.copyCharset.success', 'Copied: {0}', charset)
+      );
+    })
   );
 
   // 設定変更の監視
@@ -128,6 +164,7 @@ export function activate(context: vscode.ExtensionContext) {
         saveDebounceTimer = setTimeout(() => {
           treeDataProvider.refresh();
           webview?.refresh();
+          updateStatusBar(vscode.window.activeTextEditor);
           saveDebounceTimer = undefined;
         }, 500);
       }

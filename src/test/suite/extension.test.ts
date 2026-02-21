@@ -57,6 +57,14 @@ function createFakeContext(): vscode.ExtensionContext {
 // ─── Test Suites ──────────────────────────────────────────────────────────────
 
 suite('Extension Test Suite', () => {
+  suiteSetup(async () => {
+    // Ensure the extension is activated before any tests run
+    const ext = vscode.extensions.getExtension('long-kudo.vscode-view-charset');
+    if (ext && !ext.isActive) {
+      await ext.activate();
+    }
+  });
+
   suiteTeardown(() => {
     // Clean up temp files created during tests
     for (const f of tmpFiles) {
@@ -83,6 +91,14 @@ suite('Extension Test Suite', () => {
       assert.ok(
         commands.includes('viewcharset.openFile'),
         'openFile command should be registered'
+      );
+    });
+
+    test('viewcharset.copyCharset command is registered', async () => {
+      const commands = await vscode.commands.getCommands(true);
+      assert.ok(
+        commands.includes('viewcharset.copyCharset'),
+        'copyCharset command should be registered'
       );
     });
   });
@@ -139,6 +155,82 @@ suite('Extension Test Suite', () => {
         assert.ok(typeof entry.encoding === 'string', 'entry.encoding should be a string');
         assert.ok(entry.encoding.length > 0, 'entry.encoding should be non-empty');
       }
+    });
+
+    test('detectWorkspaceFiles() entries have hasBOM and lineEnding fields', async () => {
+      const result = await CharsetDetector.getInstance().detectWorkspaceFiles();
+      for (const entry of result) {
+        assert.ok(typeof entry.hasBOM === 'boolean', 'entry.hasBOM should be a boolean');
+        assert.ok(
+          ['CRLF', 'LF', 'Mixed', 'Unknown'].includes(entry.lineEnding),
+          `entry.lineEnding should be a valid value, got: "${entry.lineEnding}"`
+        );
+      }
+    });
+
+    test('detectSingleFileInfo() returns correct shape for a UTF-8 file', async () => {
+      const file = createTmpFile('Hello, World!\nLine 2\n');
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(file);
+      assert.ok(typeof result.encoding === 'string' && result.encoding.length > 0);
+      assert.ok(typeof result.hasBOM === 'boolean');
+      assert.ok(['CRLF', 'LF', 'Mixed', 'Unknown'].includes(result.lineEnding));
+    });
+
+    test('detectSingleFileInfo() detects no BOM for a plain UTF-8 file', async () => {
+      const file = createTmpFile('No BOM here\n');
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(file);
+      assert.strictEqual(result.hasBOM, false, 'Plain UTF-8 file should have no BOM');
+    });
+
+    test('detectSingleFileInfo() detects BOM for a UTF-8 BOM file', async () => {
+      const tmpPath = path.join(
+        os.tmpdir(),
+        `vcs-test-bom-${Date.now()}.txt`
+      );
+      // Write UTF-8 BOM + content
+      const bom = Buffer.from([0xEF, 0xBB, 0xBF]);
+      const content = Buffer.from('BOM file content\n', 'utf8');
+      fs.writeFileSync(tmpPath, Buffer.concat([bom, content]));
+      tmpFiles.push(tmpPath);
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(tmpPath);
+      assert.strictEqual(result.hasBOM, true, 'UTF-8 BOM file should have hasBOM=true');
+    });
+
+    test('detectSingleFileInfo() detects LF line ending', async () => {
+      const file = createTmpFile('line1\nline2\nline3\n');
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(file);
+      assert.strictEqual(result.lineEnding, 'LF', 'LF-only file should return LF');
+    });
+
+    test('detectSingleFileInfo() detects CRLF line ending', async () => {
+      const tmpPath = path.join(
+        os.tmpdir(),
+        `vcs-test-crlf-${Date.now()}.txt`
+      );
+      fs.writeFileSync(tmpPath, 'line1\r\nline2\r\nline3\r\n', 'binary');
+      tmpFiles.push(tmpPath);
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(tmpPath);
+      assert.strictEqual(result.lineEnding, 'CRLF', 'CRLF-only file should return CRLF');
+    });
+
+    test('detectSingleFileInfo() detects Mixed line endings', async () => {
+      const tmpPath = path.join(
+        os.tmpdir(),
+        `vcs-test-mixed-${Date.now()}.txt`
+      );
+      fs.writeFileSync(tmpPath, 'line1\r\nline2\nline3\r\n', 'binary');
+      tmpFiles.push(tmpPath);
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(tmpPath);
+      assert.strictEqual(result.lineEnding, 'Mixed', 'Mixed line endings should return Mixed');
+    });
+
+    test('detectSingleFileInfo() returns Unknown for a non-existent file', async () => {
+      const result = await CharsetDetector.getInstance().detectSingleFileInfo(
+        '/non/existent/path/file_vcs_test2.txt'
+      );
+      assert.strictEqual(result.encoding, 'Unknown');
+      assert.strictEqual(result.hasBOM, false);
+      assert.strictEqual(result.lineEnding, 'Unknown');
     });
   });
 

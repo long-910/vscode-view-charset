@@ -7,6 +7,8 @@ import * as fs from 'fs';
 export interface FileInfo {
   path: string;
   encoding: string;
+  hasBOM: boolean;
+  lineEnding: 'CRLF' | 'LF' | 'Mixed' | 'Unknown';
 }
 
 export class CharsetDetector {
@@ -22,6 +24,42 @@ export class CharsetDetector {
       CharsetDetector.instance = new CharsetDetector();
     }
     return CharsetDetector.instance;
+  }
+
+  private detectBOM(bytes: Uint8Array): boolean {
+    if (bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) { return true; } // UTF-8
+    if (bytes[0] === 0xFF && bytes[1] === 0xFE) { return true; } // UTF-16 LE
+    if (bytes[0] === 0xFE && bytes[1] === 0xFF) { return true; } // UTF-16 BE
+    return false;
+  }
+
+  private detectLineEnding(bytes: Uint8Array): 'CRLF' | 'LF' | 'Mixed' | 'Unknown' {
+    let hasCRLF = false, hasLF = false;
+    for (let i = 0; i < bytes.length; i++) {
+      if (bytes[i] === 0x0D && bytes[i + 1] === 0x0A) { hasCRLF = true; i++; }
+      else if (bytes[i] === 0x0A) { hasLF = true; }
+    }
+    if (hasCRLF && hasLF) { return 'Mixed'; }
+    if (hasCRLF) { return 'CRLF'; }
+    if (hasLF) { return 'LF'; }
+    return 'Unknown';
+  }
+
+  public async detectSingleFileInfo(filePath: string): Promise<Omit<FileInfo, 'path'>> {
+    try {
+      const content = await vscode.workspace.fs.readFile(vscode.Uri.file(filePath));
+      const detected = encoding.detect(content);
+      const hasBOM = this.detectBOM(content);
+      const lineEnding = this.detectLineEnding(content);
+      return {
+        encoding: detected || 'Unknown',
+        hasBOM,
+        lineEnding,
+      };
+    } catch (error) {
+      this.logger.error('Failed to detect file info', { file: filePath, error });
+      return { encoding: 'Unknown', hasBOM: false, lineEnding: 'Unknown' };
+    }
   }
 
   public async detectWorkspaceFiles(): Promise<FileInfo[]> {
@@ -40,10 +78,10 @@ export class CharsetDetector {
 
       const settled = await Promise.allSettled(
         files.map(async (file) => {
-          const enc = await this.detectCharset(file.fsPath);
+          const info = await this.detectSingleFileInfo(file.fsPath);
           return {
             path: path.relative(workspaceFolder, file.fsPath),
-            encoding: enc,
+            ...info,
           };
         })
       );
@@ -65,14 +103,7 @@ export class CharsetDetector {
   }
 
   public async detectCharset(filePath: string): Promise<string> {
-    try {
-      const content = await vscode.workspace.fs.readFile(vscode.Uri.file(filePath));
-      const detected = encoding.detect(content);
-      return detected || 'Unknown';
-    } catch (error) {
-      this.logger.error('Failed to detect charset', { file: filePath, error });
-      return 'Unknown';
-    }
+    return (await this.detectSingleFileInfo(filePath)).encoding;
   }
 
   public shouldProcessFile(filePath: string): boolean {
@@ -87,4 +118,4 @@ export class CharsetDetector {
       return false;
     }
   }
-} 
+}

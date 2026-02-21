@@ -21,5 +21,7 @@
   "command.openFile.error.notFound": "未找到檔案",
   "command.openFile.success": "已開啟檔案：{0}",
   "command.openFile.error.general": "無法開啟檔案",
+  "command.copyCharset": "複製字元編碼到剪貼簿",
+  "command.copyCharset.success": "已複製：{0}",
   "error.activate": "View Charset 擴充功能啟用失敗。錯誤：{0}"
 }
