@@ -1,13 +1,10 @@
 # VSCode View Charset Extension
 
-[![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo.vscode-view-charset/test_coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo.vscode-view-charset&utm_campaign=Badge_Grade_Settings)
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 
 <div align="center">
 
@@ -27,16 +24,20 @@
 
 - **문자 인코딩 표시**
 
-  - 트리 뷰：**작업 공간 디렉터리 구조를 그대로 반영한 폴더 트리 형식**으로 파일과 문자 인코딩을 표시합니다. 폴더는 접기/펼치기가 가능하며, 파일 옆에는 감지된 문자 인코딩이 표시됩니다
-  - 웹 뷰：파일 경로와 문자 인코딩을 풍부한 테이블 UI로 표시합니다. 검색/필터 및 정렬 기능을 제공합니다
+  - 트리 뷰：**작업 공간 디렉터리 구조를 그대로 반영한 폴더 트리 형식**으로 파일과 문자 인코딩을 표시합니다. 폴더는 접기/펼치기가 가능하며, BOM이 있는 경우 `UTF-8 BOM` 등으로 표시됩니다
+  - 웹 뷰：파일 경로, 문자 인코딩, 줄 끝 문자를 풍부한 테이블 UI로 표시합니다. 검색/필터 및 정렬 기능을 제공합니다
+  - 상태 표시줄：오른쪽 하단에 현재 파일의 문자 인코딩(BOM 여부 포함)을 항상 표시합니다. 클릭하면 웹 뷰가 열립니다
   - 다국어 지원 (영어, 일본어, 중국어, 한국어)
 
 - **고급 기능**
 
+  - BOM 감지：트리 뷰와 웹 뷰에서 `UTF-8 BOM`、`UTF-16LE BOM` 등을 표시
+  - 줄 끝 문자 감지：웹 뷰 열에서 `CRLF`、`LF`、`Mixed`、`Unknown`을 표시
+  - 컨텍스트 메뉴「**클립보드에 문자 인코딩 복사**」：트리 뷰에서 파일을 우클릭하여 인코딩 문자열을 복사
   - 설정 가능한 파일 확장자와 제외 패턴
   - 문자 인코딩 감지 결과의 캐시
   - 디버깅을 위한 상세 로그
-  - 웹 뷰에서의 CSV 내보내기 기능
+  - 웹 뷰에서의 CSV 내보내기（경로, 파일명, 문자 인코딩, BOM, 줄 끝 문자 열 포함）
 
 ## 설치
 
@@ -68,15 +69,20 @@
 
    - VS Code 탐색기 사이드바에 "View Charset" 뷰가 표시됩니다
    - 작업 공간 디렉터리 구조가 접기/펼치기 가능한 폴더 트리로 표시됩니다
-   - 각 파일 옆에 감지된 문자 인코딩이 표시됩니다
+   - 각 파일 옆에 감지된 문자 인코딩（예: `UTF-8`, `UTF-8 BOM`, `SJIS`）이 표시됩니다
    - 폴더를 클릭하면 펼치거나 접을 수 있습니다
+   - 파일을 우클릭하여 「**클립보드에 문자 인코딩 복사**」를 선택하면 인코딩 문자열을 복사할 수 있습니다
 
 2. **웹 뷰에서**:
    - 명령 팔레트를 엽니다 (`Ctrl+Shift+P`)
    - "`Open View Charset Web View`"를 실행합니다
    - 검색 상자로 파일 경로나 인코딩 이름으로 필터링
-   - 열 헤더를 클릭하여 경로 또는 인코딩으로 정렬
-   - "Export to CSV" 버튼을 클릭하여 전체 목록을 내보냅니다（경로, 파일명, 인코딩 열 포함）
+   - 열 헤더를 클릭하여 경로, 인코딩 또는 줄 끝 문자로 정렬
+   - "Export to CSV" 버튼을 클릭하여 전체 목록을 내보냅니다（경로, 파일명, 문자 인코딩, BOM, 줄 끝 문자 열 포함）
+
+3. **상태 표시줄에서**:
+   - 창 오른쪽 하단에 현재 파일의 문자 인코딩（BOM 여부 포함）이 항상 표시됩니다
+   - 상태 표시줄 항목을 클릭하면 웹 뷰가 열립니다
 
 ### 설정
 
@@ -138,12 +144,12 @@ vscode-view-charset/
 │   ├── charsetDetector.ts    # 문자 인코딩 감지（encoding-japanese, 싱글톤）
 │   ├── TreeDataProvider.ts   # 탐색기 트리 뷰. 폴더 계층 + 인코딩 레이블
 │   ├── webview.ts            # WebView 패널. 테이블 UI, 검색/정렬, CSV 내보내기
-│   ├── logger.ts             # winston 기반 로거（싱글톤）. 콘솔 + 출력 채널
+│   ├── logger.ts             # 경량 커스텀 로거（싱글톤）. 콘솔 + 출력 채널
 │   └── test/
-│       ├── runTest.ts        # 통합 테스트 실행기（vscode-test）
+│       ├── runTest.ts        # 통합 테스트 실행기（@vscode/test-electron）
 │       ├── fixtures/         # 테스트 워크스페이스용 샘플 파일
 │       └── suite/
-│           └── extension.test.ts  # Mocha 테스트 스위트（28개 테스트）
+│           └── extension.test.ts  # Mocha 테스트 스위트（45개 테스트）
 ├── i18n/                     # NLS 번역 파일（en, ja, zh-cn, zh-tw, ko）
 ├── images/
 │   ├── icon.png              # 확장 프로그램 아이콘

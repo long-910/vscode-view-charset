@@ -21,5 +21,7 @@
   "command.openFile.error.notFound": "未找到文件",
   "command.openFile.success": "已打开文件：{0}",
   "command.openFile.error.general": "无法打开文件",
+  "command.copyCharset": "复制字符编码到剪贴板",
+  "command.copyCharset.success": "已复制：{0}",
   "error.activate": "View Charset 扩展激活失败。错误：{0}"
 }

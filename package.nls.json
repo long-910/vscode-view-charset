@@ -21,5 +21,7 @@
   "command.openFile.error.notFound": "File not found",
   "command.openFile.success": "Opened file: {0}",
   "command.openFile.error.general": "Failed to open file",
+  "command.copyCharset": "Copy Charset to Clipboard",
+  "command.copyCharset.success": "Copied: {0}",
   "error.activate": "Failed to activate View Charset extension. Error: {0}"
 }

@@ -73,8 +73,8 @@ export class CharsetTreeDataProvider
       files.map(async (relativePath) => {
         const normalized = relativePath.replace(/\\/g, "/");
         const absolutePath = path.join(workspaceFolder, relativePath);
-        const charset = await this.charsetDetector.detectCharset(absolutePath);
-        return { normalized, absolutePath, charset };
+        const info = await this.charsetDetector.detectSingleFileInfo(absolutePath);
+        return { normalized, absolutePath, charset: info.encoding, hasBOM: info.hasBOM };
       })
     );
 
@@ -86,7 +86,7 @@ export class CharsetTreeDataProvider
         continue;
       }
 
-      const { normalized, absolutePath, charset } = result.value;
+      const { normalized, absolutePath, charset, hasBOM } = result.value;
       const parts = normalized.split("/");
 
       // 祖先フォルダをすべてキャッシュに登録
@@ -107,7 +107,7 @@ export class CharsetTreeDataProvider
       // ファイルを親フォルダに追加
       const fileName = parts[parts.length - 1];
       const parentKey = parts.slice(0, -1).join("/");
-      const fileItem = new FileItem(fileName, charset, {
+      const fileItem = new FileItem(fileName, charset, hasBOM, {
         command: "viewcharset.openFile",
         title: "Open File",
         arguments: [absolutePath],
@@ -231,12 +231,13 @@ class FileItem extends vscode.TreeItem {
   constructor(
     public readonly label: string,
     charset: string,
+    hasBOM: boolean,
     public readonly command?: vscode.Command
   ) {
     super(label, vscode.TreeItemCollapsibleState.None);
-    this.tooltip = `${this.label} (${charset})`;
-    this.description = charset;
+    this.description = hasBOM ? `${charset} BOM` : charset;
+    this.tooltip = `${this.label} (${this.description})`;
     this.iconPath = new vscode.ThemeIcon("file");
-    this.contextValue = "file";
+    this.contextValue = "charsetFile";
   }
 }

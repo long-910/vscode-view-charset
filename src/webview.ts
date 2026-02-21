@@ -1,10 +1,5 @@
 import * as vscode from 'vscode';
-import { CharsetDetector } from "./charsetDetector";
-
-interface FileInfo {
-  path: string;
-  encoding: string;
-}
+import { CharsetDetector, FileInfo } from "./charsetDetector";
 
 export class ViewCharsetWebview {
   private files: FileInfo[] = [];
@@ -120,10 +115,12 @@ export class ViewCharsetWebview {
       <tr>
         <th data-col="0">File <span class="sort-icon">&#9650;</span></th>
         <th data-col="1">Encoding <span class="sort-icon">&#9650;</span></th>
+        <th data-col="2">BOM <span class="sort-icon">&#9650;</span></th>
+        <th data-col="3">Line Ending <span class="sort-icon">&#9650;</span></th>
       </tr>
     </thead>
     <tbody id="tableBody">
-      <tr><td colspan="2" class="loading">Loading...</td></tr>
+      <tr><td colspan="4" class="loading">Loading...</td></tr>
     </tbody>
   </table>
   <script>
@@ -154,11 +151,11 @@ export class ViewCharsetWebview {
     function renderTable(files) {
       const tbody = document.getElementById('tableBody');
       if (files.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="2" class="no-files">No files found</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="no-files">No files found</td></tr>';
         return;
       }
       tbody.innerHTML = files.map(f =>
-        '<tr><td>' + escapeHtml(f.path) + '</td><td>' + escapeHtml(f.encoding) + '</td></tr>'
+        '<tr><td>' + escapeHtml(f.path) + '</td><td>' + escapeHtml(f.encoding) + '</td><td>' + (f.hasBOM ? '✓' : '') + '</td><td>' + escapeHtml(f.lineEnding) + '</td></tr>'
       ).join('');
     }
 
@@ -259,13 +256,13 @@ export class ViewCharsetWebview {
       if (!uri) { return; }
 
       const csvContent = [
-        ['Path', 'Filename', 'Encoding'].map(h => this.csvQuote(h)).join(','),
+        ['Path', 'Filename', 'Encoding', 'BOM', 'LineEnding'].map(h => this.csvQuote(h)).join(','),
         ...this.files.map(file => {
           const normalized = file.path.replace(/\\/g, '/');
           const lastSlash = normalized.lastIndexOf('/');
           const dirPath = lastSlash > 0 ? normalized.substring(0, lastSlash) : '';
           const filename = lastSlash > 0 ? normalized.substring(lastSlash + 1) : normalized;
-          return [dirPath, filename, file.encoding].map(v => this.csvQuote(v)).join(',');
+          return [dirPath, filename, file.encoding, file.hasBOM ? 'TRUE' : 'FALSE', file.lineEnding].map(v => this.csvQuote(v)).join(',');
         })
       ].join('\n');
 

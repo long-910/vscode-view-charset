@@ -1,6 +1,7 @@
 import * as path from 'path';
+import * as os from 'os';
 
-import { runTests } from 'vscode-test';
+import { runTests } from '@vscode/test-electron';
 
 async function main() {
 	try {
@@ -16,12 +17,14 @@ async function main() {
 		const workspacePath = path.resolve(__dirname, '../../src/test/fixtures');
 
 		// Download VS Code, unzip it and run the integration test
+		// Use a separate user-data-dir so the test instance doesn't conflict with a running VS Code
+		const userDataDir = path.join(os.tmpdir(), 'vscode-test-user-data');
 		await runTests({
 			extensionDevelopmentPath,
 			extensionTestsPath,
-			launchArgs: [workspacePath, '--disable-workspace-trust'],
+			launchArgs: [workspacePath, '--disable-workspace-trust', `--user-data-dir=${userDataDir}`],
 		});
-	} catch (err) {
+	} catch {
 		console.error('Failed to run tests');
 		process.exit(1);
 	}

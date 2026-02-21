@@ -21,5 +21,7 @@
   "command.openFile.error.notFound": "ファイルが見つかりません",
   "command.openFile.success": "ファイルを開きました: {0}",
   "command.openFile.error.general": "ファイルを開けませんでした",
+  "command.copyCharset": "文字コードをクリップボードにコピー",
+  "command.copyCharset.success": "コピーしました: {0}",
   "error.activate": "View Charset 拡張機能の有効化に失敗しました。エラー: {0}"
 }

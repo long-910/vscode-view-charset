@@ -1,13 +1,10 @@
 # VSCode View Charset Extension
 
-[![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo.vscode-view-charset/test_coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo.vscode-view-charset&utm_campaign=Badge_Grade_Settings)
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 
 <div align="center">
 
@@ -27,16 +24,20 @@
 
 - **文字コード表示**
 
-  - ツリービュー: ワークスペースの**フォルダ構造をそのまま反映したツリー形式**でファイルと文字コードを表示。フォルダは折りたたみ可能で、ファイルには検出された文字コードが説明として表示されます
-  - Web ビュー: ファイルパスと文字コードをテーブル形式のリッチ UI で表示。検索・フィルタ・ソート機能付き
+  - ツリービュー: ワークスペースの**フォルダ構造をそのまま反映したツリー形式**でファイルと文字コードを表示。フォルダは折りたたみ可能で、BOM ありの場合は `UTF-8 BOM` のようにサフィックス付きで表示
+  - Web ビュー: ファイルパス・文字コード・改行コードをテーブル形式のリッチ UI で表示。検索・フィルタ・ソート機能付き
+  - ステータスバー: 右下にアクティブファイルの文字コード（BOM 有無含む）を常時表示。クリックで Web ビューを開く
   - 多言語対応 (英語、日本語、中国語、韓国語)
 
 - **高度な機能**
 
+  - BOM 検出: `UTF-8 BOM`、`UTF-16LE BOM` などをツリービュー・Web ビューで表示
+  - 改行コード検出: `CRLF`・`LF`・`Mixed`・`Unknown` を Web ビューの列として表示
+  - コンテキストメニュー「**クリップボードへ文字コードをコピー**」: ツリービューでファイルを右クリックして文字コード文字列をコピー
   - 設定可能なファイル拡張子と除外パターン
   - 文字コード検出結果のキャッシュ
   - デバッグ用の詳細なログ
-  - Web ビューからの CSV エクスポート機能
+  - Web ビューからの CSV エクスポート（パス・ファイル名・文字コード・BOM・改行コードの列を含む）
 
 ## インストール
 
@@ -68,15 +69,20 @@
 
    - VS Code のエクスプローラーサイドバーに「View Charset」ビューが表示されます
    - ワークスペースのフォルダ構造がツリー形式で表示されます
-   - 各ファイルには検出された文字コードが説明として表示されます
+   - 各ファイルには検出された文字コード（例: `UTF-8`、`UTF-8 BOM`、`SJIS`）が説明として表示されます
    - フォルダをクリックすると展開・折りたたみができます
+   - ファイルを右クリックして「**クリップボードへ文字コードをコピー**」を選択すると、文字コード文字列をコピーできます
 
 2. **Web ビューで**:
    - コマンドパレットを開く (`Ctrl+Shift+P`)
    - 「`Open View Charset Web View`」を実行
    - 検索ボックスでファイルパスや文字コード名でフィルタリング
-   - 列ヘッダーをクリックしてパスまたは文字コードでソート
-   - 「Export to CSV」ボタンをクリックして一覧をエクスポート（パス・ファイル名・文字コードの列を含む）
+   - 列ヘッダーをクリックしてパス・文字コード・改行コードでソート
+   - 「Export to CSV」ボタンをクリックして一覧をエクスポート（パス・ファイル名・文字コード・BOM・改行コードの列を含む）
+
+3. **ステータスバーで**:
+   - ウィンドウ右下にアクティブファイルの文字コード（BOM 有無含む）が常時表示されます
+   - ステータスバーアイテムをクリックすると Web ビューが開きます
 
 ### 設定
 
@@ -138,12 +144,12 @@ vscode-view-charset/
 │   ├── charsetDetector.ts    # encoding-japanese による文字コード検出（シングルトン）
 │   ├── TreeDataProvider.ts   # Explorer ツリービュー。フォルダ階層 + 文字コードラベル
 │   ├── webview.ts            # WebView パネル。テーブル UI・検索/ソート・CSV エクスポート
-│   ├── logger.ts             # winston ベースのロガー（シングルトン）。コンソール + 出力チャンネル
+│   ├── logger.ts             # 軽量カスタムロガー（シングルトン）。コンソール + 出力チャンネル
 │   └── test/
-│       ├── runTest.ts        # 統合テストランナー（vscode-test）
+│       ├── runTest.ts        # 統合テストランナー（@vscode/test-electron）
 │       ├── fixtures/         # テストワークスペース用サンプルファイル
 │       └── suite/
-│           └── extension.test.ts  # Mocha テストスイート（28 テスト）
+│           └── extension.test.ts  # Mocha テストスイート（45 テスト）
 ├── i18n/                     # NLS 翻訳ファイル（en, ja, zh-cn, zh-tw, ko）
 ├── images/
 │   ├── icon.png              # 拡張機能のアイコン

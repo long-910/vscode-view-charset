@@ -1,13 +1,10 @@
 # VSCode View Charset Extension
 
-[![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo.vscode-view-charset/test_coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo.vscode-view-charset&utm_campaign=Badge_Grade_Settings)
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 
 <div align="center">
 
@@ -27,15 +24,19 @@
 
 - **字符编码显示**
 
-  - 树形视图：以**与工作区目录结构完全一致的文件夹树形式**显示文件和字符编码。文件夹可折叠，文件旁边显示检测到的字符编码
-  - 网页视图：以丰富的表格 UI 显示文件路径和字符编码，支持搜索/过滤和排序
+  - 树形视图：以**与工作区目录结构完全一致的文件夹树形式**显示文件和字符编码。文件夹可折叠，存在 BOM 时以 `UTF-8 BOM` 等形式显示
+  - 网页视图：以丰富的表格 UI 显示文件路径、字符编码和行尾符，支持搜索/过滤和排序
+  - 状态栏：在右下角持续显示当前文件的字符编码（含 BOM 状态），点击可打开网页视图
   - 多语言支持（英语、日语、中文、韩语）
 
 - **高级功能**
+  - BOM 检测：在树形视图和网页视图中显示 `UTF-8 BOM`、`UTF-16LE BOM` 等
+  - 行尾符检测：在网页视图列中显示 `CRLF`、`LF`、`Mixed` 或 `Unknown`
+  - 上下文菜单"**复制字符编码到剪贴板**"：在树形视图中右键单击文件即可复制
   - 可配置的文件扩展名和排除模式
   - 字符编码检测结果的缓存
   - 详细的调试日志输出
-  - 网页视图中的 CSV 导出功能
+  - 网页视图中的 CSV 导出（包含路径、文件名、字符编码、BOM 和行尾符列）
 
 ## 安装
 
@@ -67,15 +68,20 @@
 
    - VS Code 的资源管理器侧边栏中显示 "View Charset" 视图
    - 工作区目录结构以可折叠的文件夹树形式显示
-   - 每个文件旁边显示检测到的字符编码
+   - 每个文件旁边显示检测到的字符编码（如 `UTF-8`、`UTF-8 BOM`、`SJIS`）
    - 点击文件夹可展开或折叠
+   - 右键单击文件，选择"**复制字符编码到剪贴板**"可复制编码字符串
 
 2. **在网页视图中查看**：
    - 打开命令面板（`Ctrl+Shift+P`）
    - 执行 "`Open View Charset Web View`"
    - 使用搜索框按文件路径或编码名称过滤
-   - 点击列标题按路径或编码排序
-   - 点击"Export to CSV"按钮导出完整列表（包含路径、文件名和字符编码列）
+   - 点击列标题按路径、编码或行尾符排序
+   - 点击"Export to CSV"按钮导出完整列表（包含路径、文件名、字符编码、BOM 和行尾符列）
+
+3. **在状态栏中**：
+   - 窗口右下角持续显示当前文件的字符编码（含 BOM 状态）
+   - 点击状态栏项目可打开网页视图
 
 ### 配置
 
@@ -137,12 +143,12 @@ vscode-view-charset/
 │   ├── charsetDetector.ts    # 字符编码检测（encoding-japanese，单例）
 │   ├── TreeDataProvider.ts   # 资源管理器树形视图。文件夹层级 + 字符编码标签
 │   ├── webview.ts            # WebView 面板。表格 UI、搜索/排序、CSV 导出
-│   ├── logger.ts             # 基于 winston 的日志记录器（单例）。控制台 + 输出频道
+│   ├── logger.ts             # 轻量级自定义日志记录器（单例）。控制台 + 输出频道
 │   └── test/
-│       ├── runTest.ts        # 集成测试运行器（vscode-test）
+│       ├── runTest.ts        # 集成测试运行器（@vscode/test-electron）
 │       ├── fixtures/         # 用于测试工作区的示例文件
 │       └── suite/
-│           └── extension.test.ts  # Mocha 测试套件（28 个测试）
+│           └── extension.test.ts  # Mocha 测试套件（45 个测试）
 ├── i18n/                     # NLS 翻译文件（en, ja, zh-cn, zh-tw, ko）
 ├── images/
 │   ├── icon.png              # 扩展图标

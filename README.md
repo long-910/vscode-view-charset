@@ -1,13 +1,10 @@
 # VSCode View Charset Extension
 
-[![Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
-[![License](https://img.shields.io/github/license/long-910/vscode-view-charset)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
-[![Maintainability](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/maintainability)](https://codeclimate.com/github/long-kudo/vscode-view-charset/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/8fc9c1d775da88566126/test_coverage)](https://codeclimate.com/github/long-kudo.vscode-view-charset/test_coverage)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/d8ab25d02fba415d8690c09832c744cc)](https://app.codacy.com/gh/long-kudo/vscode-view-charset?utm_source=github.com&utm_medium=referral&utm_content=long-kudo.vscode-view-charset&utm_campaign=Badge_Grade_Settings)
+[![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
+[![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
 
 <div align="center">
 
@@ -27,16 +24,20 @@ With this extension, you can easily check the character encoding of files and id
 
 - **Character Encoding Display**
 
-  - Tree View: Displays files and their character encodings in a **folder tree** that mirrors your workspace directory structure — folders are collapsible, files show the detected charset as a description
-  - Web View: Rich UI table of file paths and character encodings with search/filter and sort
+  - Tree View: Displays files and their character encodings in a **folder tree** that mirrors your workspace directory structure — folders are collapsible, files show the detected charset (with BOM suffix when present, e.g. `UTF-8 BOM`) as a description
+  - Web View: Rich UI table of file paths, encodings, and line endings with search/filter and sort
+  - Status Bar: Shows the active file's encoding (and BOM status) at the bottom-right; click to open the Web View
   - Multi-language support (English, Japanese, Chinese, Korean)
 
 - **Advanced Features**
 
+  - BOM detection: displays `UTF-8 BOM`, `UTF-16LE BOM`, etc. in Tree View and Web View
+  - Line ending detection: `CRLF`, `LF`, `Mixed`, or `Unknown` shown as a Web View column
+  - Context menu "**Copy Charset to Clipboard**": right-click a file in the Tree View to copy its charset string
   - Configurable file extensions and exclude patterns
   - Caching of character encoding detection results
   - Detailed logging for debugging
-  - CSV export functionality from WebView interface
+  - CSV export from Web View (includes Path, Filename, Encoding, BOM, and Line Ending columns)
 
 ## Installation
 
@@ -68,15 +69,20 @@ With this extension, you can easily check the character encoding of files and id
 
    - The "View Charset" view appears in the VS Code explorer sidebar
    - Your workspace directory structure is shown as a collapsible folder tree
-   - Each file displays its detected character encoding as the item description
+   - Each file displays its detected character encoding (e.g. `UTF-8`, `UTF-8 BOM`, `SJIS`) as the item description
    - Click a folder to expand or collapse it
+   - Right-click a file and select "**Copy Charset to Clipboard**" to copy its charset string
 
 2. **In Web View**:
    - Open the command palette (`Ctrl+Shift+P`)
    - Execute "`Open View Charset Web View`"
    - Use the search box to filter by file path or encoding name
-   - Click column headers to sort by path or encoding
-   - Click the "Export to CSV" button to export the full list (includes path, filename, and encoding columns)
+   - Click column headers to sort by path, encoding, or line ending
+   - Click the "Export to CSV" button to export the full list (includes Path, Filename, Encoding, BOM, and Line Ending columns)
+
+3. **In the Status Bar**:
+   - The active file's encoding (and BOM status) is shown at the bottom-right of the window
+   - Click the status bar item to open the Web View
 
 ### Configuration
 
@@ -138,12 +144,12 @@ vscode-view-charset/
 │   ├── charsetDetector.ts    # Character encoding detection (encoding-japanese, singleton)
 │   ├── TreeDataProvider.ts   # Explorer Tree View; folder hierarchy + charset labels
 │   ├── webview.ts            # WebView panel; table UI, search/sort, CSV export
-│   ├── logger.ts             # Winston-based logger (singleton); console + output channel
+│   ├── logger.ts             # Lightweight custom logger (singleton); console + output channel
 │   └── test/
-│       ├── runTest.ts        # Integration test runner (vscode-test)
+│       ├── runTest.ts        # Integration test runner (@vscode/test-electron)
 │       ├── fixtures/         # Sample files used as test workspace
 │       └── suite/
-│           └── extension.test.ts  # Mocha test suite (28 tests)
+│           └── extension.test.ts  # Mocha test suite (45 tests)
 ├── i18n/                     # NLS translation files (en, ja, zh-cn, zh-tw, ko)
 ├── images/
 │   ├── icon.png              # Extension icon

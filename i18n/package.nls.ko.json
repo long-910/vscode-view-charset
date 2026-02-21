@@ -21,5 +21,7 @@
   "command.openFile.error.notFound": "파일을 찾을 수 없습니다",
   "command.openFile.success": "파일을 열었습니다: {0}",
   "command.openFile.error.general": "파일을 열 수 없습니다",
+  "command.copyCharset": "문자 인코딩을 클립보드에 복사",
+  "command.copyCharset.success": "복사됨: {0}",
   "error.activate": "View Charset 확장 프로그램 활성화에 실패했습니다. 오류: {0}"
 }
