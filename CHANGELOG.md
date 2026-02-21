@@ -2,6 +2,36 @@
 
 All notable changes to the "View Charset" extension will be documented in this file.
 
+## [Unreleased] - Development environment
+
+### Changed (toolchain only, no functional changes)
+
+- Migrated from deprecated `vscode-test@1.6.1` to `@vscode/test-electron@^2.4.1`
+- Migrated ESLint v8 (legacy `.eslintrc.json`) to ESLint v9 with flat config (`eslint.config.mjs`)
+- Replaced `@typescript-eslint/eslint-plugin` + `@typescript-eslint/parser` with unified `typescript-eslint@^8`
+- Removed unused `jest`, `coveralls`, `@types/glob` devDependencies
+- Updated `@types/node` to `22.x` and `@types/vscode` to `^1.96.0`
+- Updated `engines.vscode` to `^1.96.0`
+- CI: replaced `npm install` with `npm ci`, added `cache: "npm"`, switched to `xvfb-run -a npm test`, updated Node matrix from `[18.x, 20.x]` to `[20.x, 22.x]`
+- Deleted `.travis.yml` (fully migrated to GitHub Actions)
+- Added `.editorconfig`, `.nvmrc` (Node 22), `.github/dependabot.yml`
+
+## [0.1.6] - 2026-02-21
+
+### Added
+
+- **BOM detection**: Tree View and WebView now show `BOM` suffix when a file has a Byte Order Mark (e.g. `UTF-8 BOM`)
+- **Line ending detection**: WebView now displays a "Line Ending" column (`CRLF` / `LF` / `Mixed` / `Unknown`) for each file
+- **Status bar**: Active file's encoding (and BOM status) is shown in the status bar at the bottom-right; clicking opens the WebView
+- **Context menu "Copy Charset to Clipboard"**: Right-click a file in the Tree View to copy its charset string to the clipboard
+- **`cacheEnabled` setting now respected**: The existing `viewCharset.cacheEnabled` configuration key now actually disables the cache when set to `false` (was previously ignored)
+- CSV export now includes `BOM` and `LineEnding` columns
+
+### Changed
+
+- `FileInfo` interface extended with `hasBOM: boolean` and `lineEnding` fields
+- Tree View file items use `contextValue = "charsetFile"` (was `"file"`) to enable context-menu targeting
+
 ## [0.1.5] - 2026-02-21
 
 ### Changed
