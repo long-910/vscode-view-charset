@@ -61,52 +61,6 @@
         }
       ]
     },
-    "localizations": [
-      {
-        "languageId": "zh-cn",
-        "languageName": "Chinese (Simplified)",
-        "localizedLanguageName": "中文(简体)",
-        "translations": [
-          {
-            "id": "long-kudo.vscode-view-charset",
-            "path": "./i18n/package.nls.zh-cn.json"
-          }
-        ]
-      },
-      {
-        "languageId": "ja",
-        "languageName": "日本語",
-        "localizedLanguageName": "日本語",
-        "translations": [
-          {
-            "id": "long-kudo.vscode-view-charset",
-            "path": "./i18n/package.nls.ja.json"
-          }
-        ]
-      },
-      {
-        "languageId": "zh-tw",
-        "languageName": "Chinese (Traditional)",
-        "localizedLanguageName": "中文(繁體)",
-        "translations": [
-          {
-            "id": "long-kudo.vscode-view-charset",
-            "path": "./i18n/package.nls.zh-tw.json"
-          }
-        ]
-      },
-      {
-        "languageId": "ko",
-        "languageName": "Korean",
-        "localizedLanguageName": "한국어",
-        "translations": [
-          {
-            "id": "long-kudo.vscode-view-charset",
-            "path": "./i18n/package.nls.ko.json"
-          }
-        ]
-      }
-    ],
     "configuration": {
       "title": "View Charset",
       "properties": {

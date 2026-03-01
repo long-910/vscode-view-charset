@@ -33,6 +33,10 @@ All notable changes to the "View Charset" extension will be documented in this f
 - CI: replaced `npm install` with `npm ci`, added `cache: "npm"`, updated Node matrix to `[20.x, 22.x]`
 - Deleted `.travis.yml` (fully migrated to GitHub Actions)
 
+### Fixed
+
+- Removed `contributes.localizations` from `package.json` — this field is reserved for VSCode Language Pack extensions and caused VSCode to prompt switching the display language to Chinese on startup
+
 ## [0.1.5] - 2026-02-21
 
 ### Changed
