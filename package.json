@@ -174,7 +174,7 @@
     "watch:webpack": "webpack --mode development --watch"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^10.0.1",
     "@types/encoding-japanese": "^2.2.1",
     "@types/mocha": "^10.0.6",
     "@types/node": "25.x",
@@ -182,7 +182,7 @@
     "@vscode/test-electron": "^2.4.1",
     "copy-webpack-plugin": "^13.0.1",
     "eslint": "^9.0.0",
-    "glob": "^10.3.10",
+    "glob": "^13.0.6",
     "mocha": "^11.7.5",
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
@@ -192,7 +192,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "encoding-japanese": "^1.0.30",
+    "encoding-japanese": "^2.2.0",
     "vscode-nls": "^5.2.0"
   }
 }
