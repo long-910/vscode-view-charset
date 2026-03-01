@@ -4,14 +4,12 @@
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/ci.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/ci.yml)
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
-## 🌐 Language Selection / 言語選択 / 语言选择 / 語言選擇 / 언어 선택
-
-| [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md) |
+|🌐 [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md) |
 | -------------------- | ---------------------- | --------------------------- | --------------------------- | ---------------------- |
 
 </div>
@@ -40,25 +38,7 @@ With this extension, you can easily check the character encoding of files and id
 
 ## Installation
 
-1. Clone this repository:
-
-   ```bash
-   git clone https://github.com/long-910/vscode-view-charset.git
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Build the extension:
-
-   ```bash
-   npm run compile
-   ```
-
-4. Press F5 to start debugging in VS Code.
+Search for **View Charset** in the VS Code Extensions view (`Ctrl+Shift+X`) and click **Install**, or install from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset).
 
 ## Usage
 
@@ -131,51 +111,9 @@ The extension provides detailed logging:
     - Debug: Detailed logs
     - Info: Basic logs
 
-## Development
-
-### Project Structure
-
-```
-vscode-view-charset/
-├── src/
-│   ├── extension.ts          # Extension entry point; command registration, event listeners, CacheManager
-│   ├── charsetDetector.ts    # Character encoding detection (encoding-japanese, singleton)
-│   ├── TreeDataProvider.ts   # Explorer Tree View; folder hierarchy + charset labels
-│   ├── webview.ts            # WebView panel; table UI, search/sort, CSV export
-│   ├── logger.ts             # Lightweight custom logger (singleton); console + output channel
-│   └── test/
-│       ├── runTest.ts        # Integration test runner (@vscode/test-electron)
-│       ├── fixtures/         # Sample files used as test workspace
-│       └── suite/
-│           └── extension.test.ts  # Mocha test suite (45 tests)
-├── i18n/                     # NLS translation files (en, ja, zh-cn, zh-tw, ko)
-├── images/
-│   ├── icon.png              # Extension icon
-│   └── viewcharset-icon.png  # Tree view icon
-├── package.json              # Extension manifest
-└── tsconfig.json             # TypeScript settings
-```
-
-### Development Scripts
-
-| Command                 | Description                            |
-| ----------------------- | -------------------------------------- |
-| `npm run compile`       | TypeScript build + NLS generation      |
-| `npm run watch`         | TypeScript watch build                 |
-| `npm run watch:webpack` | Webpack watch build                    |
-| `npm run lint`          | ESLint check                           |
-| `npm test`              | Full test run (compile → lint → mocha) |
-| `npm run package`       | Production build (webpack + NLS)       |
-
-Press **F5** in VS Code to launch the Extension Development Host for manual testing.
-
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/your-feature`
-3. Commit changes: `git commit -m "Add your feature"`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Create a Pull Request
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, project structure, and contribution guidelines.
 
 ## License
 

@@ -2,21 +2,9 @@
 
 All notable changes to the "View Charset" extension will be documented in this file.
 
-## [Unreleased] - Development environment
+## [Unreleased]
 
-### Changed (toolchain only, no functional changes)
-
-- Migrated from deprecated `vscode-test@1.6.1` to `@vscode/test-electron@^2.4.1`
-- Migrated ESLint v8 (legacy `.eslintrc.json`) to ESLint v9 with flat config (`eslint.config.mjs`)
-- Replaced `@typescript-eslint/eslint-plugin` + `@typescript-eslint/parser` with unified `typescript-eslint@^8`
-- Removed unused `jest`, `coveralls`, `@types/glob` devDependencies
-- Updated `@types/node` to `22.x` and `@types/vscode` to `^1.96.0`
-- Updated `engines.vscode` to `^1.96.0`
-- CI: replaced `npm install` with `npm ci`, added `cache: "npm"`, switched to `xvfb-run -a npm test`, updated Node matrix from `[18.x, 20.x]` to `[20.x, 22.x]`
-- Deleted `.travis.yml` (fully migrated to GitHub Actions)
-- Added `.editorconfig`, `.nvmrc` (Node 22), `.github/dependabot.yml`
-
-## [0.1.6] - 2026-02-21
+## [0.1.6] - 2026-03-01
 
 ### Added
 
@@ -26,11 +14,28 @@ All notable changes to the "View Charset" extension will be documented in this f
 - **Context menu "Copy Charset to Clipboard"**: Right-click a file in the Tree View to copy its charset string to the clipboard
 - **`cacheEnabled` setting now respected**: The existing `viewCharset.cacheEnabled` configuration key now actually disables the cache when set to `false` (was previously ignored)
 - CSV export now includes `BOM` and `LineEnding` columns
+- Added GitHub Sponsor badge to all READMEs and `sponsor` field to `package.json`
+- Added `.editorconfig`, `.nvmrc` (Node 22), `.github/dependabot.yml`
 
 ### Changed
 
 - `FileInfo` interface extended with `hasBOM: boolean` and `lineEnding` fields
 - Tree View file items use `contextValue = "charsetFile"` (was `"file"`) to enable context-menu targeting
+- CI: replaced `main.yml` / `publish.yml` with `ci.yml` / `release.yml`; CI badge URLs in all READMEs updated accordingly
+- Improved `dependabot.yml`: aligned `github-actions` section with `npm` section; fixed ignore rule target from `"vscode"` to `"@types/vscode"`
+- Updated GitHub Actions: `actions/checkout` v4→v6, `actions/setup-node` v4→v6, `hmarr/auto-approve-action` v3→v4
+- Migrated from deprecated `vscode-test@1.6.1` to `@vscode/test-electron@^2.4.1`
+- Migrated ESLint v8 (`.eslintrc.json`) to ESLint v9 flat config (`eslint.config.mjs`)
+- Replaced `@typescript-eslint/eslint-plugin` + `@typescript-eslint/parser` with unified `typescript-eslint@^8`
+- Removed unused `jest`, `coveralls`, `@types/glob` devDependencies
+- Bumped `mocha` from 10.x to 11.x, `@types/node` to `25.x`, `@types/vscode` to `^1.109.0`
+- Updated `engines.vscode` to `^1.96.0`
+- CI: replaced `npm install` with `npm ci`, added `cache: "npm"`, updated Node matrix to `[20.x, 22.x]`
+- Deleted `.travis.yml` (fully migrated to GitHub Actions)
+
+### Fixed
+
+- Removed `contributes.localizations` from `package.json` — this field is reserved for VSCode Language Pack extensions and caused VSCode to prompt switching the display language to Chinese on startup
 
 ## [0.1.5] - 2026-02-21
 

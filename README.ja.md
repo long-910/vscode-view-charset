@@ -4,14 +4,12 @@
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/ci.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/ci.yml)
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
-## 🌐 Language Selection / 言語選択 / 语言选择 / 語言選擇 / 언어 선택
-
-| [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md) |
+|🌐 [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md) |
 | -------------------- | ---------------------- | --------------------------- | --------------------------- | ---------------------- |
 
 </div>
@@ -40,25 +38,7 @@
 
 ## インストール
 
-1. リポジトリをクローン:
-
-   ```bash
-   git clone https://github.com/long-910/vscode-view-charset.git
-   ```
-
-2. 依存関係をインストール:
-
-   ```bash
-   npm install
-   ```
-
-3. 拡張機能をビルド:
-
-   ```bash
-   npm run compile
-   ```
-
-4. F5 キーを押して VS Code でデバッグを開始
+VS Code の拡張機能ビュー（`Ctrl+Shift+X`）で **View Charset** を検索して **インストール** をクリックするか、[VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) からインストールしてください。
 
 ## 使用方法
 
@@ -131,51 +111,9 @@ VS Code の設定（`Ctrl+,`）で拡張機能を設定:
     - デバッグ: 詳細なログ
     - 情報: 基本的なログ
 
-## 開発
-
-### プロジェクト構造
-
-```
-vscode-view-charset/
-├── src/
-│   ├── extension.ts          # エントリポイント。コマンド登録・イベント監視・CacheManager
-│   ├── charsetDetector.ts    # encoding-japanese による文字コード検出（シングルトン）
-│   ├── TreeDataProvider.ts   # Explorer ツリービュー。フォルダ階層 + 文字コードラベル
-│   ├── webview.ts            # WebView パネル。テーブル UI・検索/ソート・CSV エクスポート
-│   ├── logger.ts             # 軽量カスタムロガー（シングルトン）。コンソール + 出力チャンネル
-│   └── test/
-│       ├── runTest.ts        # 統合テストランナー（@vscode/test-electron）
-│       ├── fixtures/         # テストワークスペース用サンプルファイル
-│       └── suite/
-│           └── extension.test.ts  # Mocha テストスイート（45 テスト）
-├── i18n/                     # NLS 翻訳ファイル（en, ja, zh-cn, zh-tw, ko）
-├── images/
-│   ├── icon.png              # 拡張機能のアイコン
-│   └── viewcharset-icon.png  # ツリービューのアイコン
-├── package.json              # 拡張機能マニフェスト
-└── tsconfig.json             # TypeScript 設定
-```
-
-### 開発用スクリプト
-
-| コマンド                | 説明                                 |
-| ----------------------- | ------------------------------------ |
-| `npm run compile`       | TypeScript ビルド + NLS 生成         |
-| `npm run watch`         | TypeScript 監視ビルド                |
-| `npm run watch:webpack` | Webpack 監視ビルド                   |
-| `npm run lint`          | ESLint チェック                      |
-| `npm test`              | テスト実行（compile → lint → mocha） |
-| `npm run package`       | 本番ビルド（webpack + NLS）          |
-
-VS Code で **F5** キーを押すと Extension Development Host が起動し、手動テストが行えます。
-
 ## 貢献
 
-1. リポジトリをフォーク
-2. 機能ブランチを作成: `git checkout -b feature/your-feature`
-3. 変更をコミット: `git commit -m "Add your feature"`
-4. ブランチにプッシュ: `git push origin feature/your-feature`
-5. プルリクエストを作成
+開発環境のセットアップ、プロジェクト構造、コントリビューションガイドラインについては [CONTRIBUTING.md](CONTRIBUTING.md) をご覧ください。
 
 ## ライセンス
 

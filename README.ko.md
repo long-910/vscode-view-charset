@@ -4,14 +4,12 @@
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
-[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/ci.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/ci.yml)
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
-## 🌐 Language Selection / 言語選択 / 语言选择 / 語言選擇 / 언어 선택
-
-| [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md) |
+|🌐 [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md) |
 | -------------------- | ---------------------- | --------------------------- | --------------------------- | ---------------------- |
 
 </div>
@@ -40,25 +38,7 @@
 
 ## 설치
 
-1. 저장소 복제:
-
-   ```bash
-   git clone https://github.com/long-910/vscode-view-charset.git
-   ```
-
-2. 의존성 설치:
-
-   ```bash
-   npm install
-   ```
-
-3. 확장 프로그램 빌드:
-
-   ```bash
-   npm run compile
-   ```
-
-4. F5 키를 눌러 VS Code에서 디버깅 시작
+VS Code 확장 프로그램 뷰(`Ctrl+Shift+X`)에서 **View Charset**을 검색하고 **설치**를 클릭하거나, [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)에서 설치하세요.
 
 ## 사용 방법
 
@@ -131,51 +111,9 @@ VS Code 설정 (`Ctrl+,`)에서 확장 프로그램을 구성:
     - 디버그: 상세 로그
     - 정보: 기본 로그
 
-## 개발
-
-### 프로젝트 구조
-
-```
-vscode-view-charset/
-├── src/
-│   ├── extension.ts          # 진입점. 명령 등록, 이벤트 감지, CacheManager
-│   ├── charsetDetector.ts    # 문자 인코딩 감지（encoding-japanese, 싱글톤）
-│   ├── TreeDataProvider.ts   # 탐색기 트리 뷰. 폴더 계층 + 인코딩 레이블
-│   ├── webview.ts            # WebView 패널. 테이블 UI, 검색/정렬, CSV 내보내기
-│   ├── logger.ts             # 경량 커스텀 로거（싱글톤）. 콘솔 + 출력 채널
-│   └── test/
-│       ├── runTest.ts        # 통합 테스트 실행기（@vscode/test-electron）
-│       ├── fixtures/         # 테스트 워크스페이스용 샘플 파일
-│       └── suite/
-│           └── extension.test.ts  # Mocha 테스트 스위트（45개 테스트）
-├── i18n/                     # NLS 번역 파일（en, ja, zh-cn, zh-tw, ko）
-├── images/
-│   ├── icon.png              # 확장 프로그램 아이콘
-│   └── viewcharset-icon.png  # 트리 뷰 아이콘
-├── package.json              # 확장 프로그램 매니페스트
-└── tsconfig.json             # TypeScript 설정
-```
-
-### 개발 스크립트
-
-| 명령                    | 설명                                       |
-| ----------------------- | ------------------------------------------ |
-| `npm run compile`       | TypeScript 빌드 + NLS 생성                 |
-| `npm run watch`         | TypeScript 감시 빌드                       |
-| `npm run watch:webpack` | Webpack 감시 빌드                          |
-| `npm run lint`          | ESLint 검사                                |
-| `npm test`              | 전체 테스트 실행（compile → lint → mocha） |
-| `npm run package`       | 프로덕션 빌드（webpack + NLS）             |
-
-VS Code에서 **F5** 키를 눌러 Extension Development Host를 실행하여 수동 테스트를 진행할 수 있습니다.
-
 ## 기여
 
-1. 저장소 포크
-2. 기능 브랜치 생성: `git checkout -b feature/your-feature`
-3. 변경사항 커밋: `git commit -m "Add your feature"`
-4. 브랜치에 푸시: `git push origin feature/your-feature`
-5. 풀 리퀘스트 생성
+개발 환경 설정, 프로젝트 구조 및 기여 가이드라인은 [CONTRIBUTING.md](CONTRIBUTING.md)를 참조하세요.
 
 ## 라이선스
 
