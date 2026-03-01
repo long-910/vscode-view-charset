@@ -37,7 +37,7 @@ updates:
           - "patch"
 
     ignore:
-      - dependency-name: "vscode"
+      - dependency-name: "@types/vscode"
         update-types: ["version-update:semver-major"]
 
   # ================================
