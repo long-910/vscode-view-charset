@@ -5,6 +5,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
@@ -23,14 +24,12 @@
 ## 기능
 
 - **문자 인코딩 표시**
-
   - 트리 뷰：**작업 공간 디렉터리 구조를 그대로 반영한 폴더 트리 형식**으로 파일과 문자 인코딩을 표시합니다. 폴더는 접기/펼치기가 가능하며, BOM이 있는 경우 `UTF-8 BOM` 등으로 표시됩니다
   - 웹 뷰：파일 경로, 문자 인코딩, 줄 끝 문자를 풍부한 테이블 UI로 표시합니다. 검색/필터 및 정렬 기능을 제공합니다
   - 상태 표시줄：오른쪽 하단에 현재 파일의 문자 인코딩(BOM 여부 포함)을 항상 표시합니다. 클릭하면 웹 뷰가 열립니다
   - 다국어 지원 (영어, 일본어, 중국어, 한국어)
 
 - **고급 기능**
-
   - BOM 감지：트리 뷰와 웹 뷰에서 `UTF-8 BOM`、`UTF-16LE BOM` 등을 표시
   - 줄 끝 문자 감지：웹 뷰 열에서 `CRLF`、`LF`、`Mixed`、`Unknown`을 표시
   - 컨텍스트 메뉴「**클립보드에 문자 인코딩 복사**」：트리 뷰에서 파일을 우클릭하여 인코딩 문자열을 복사
@@ -66,7 +65,6 @@
 ### 문자 인코딩 보기
 
 1. **트리 뷰에서**:
-
    - VS Code 탐색기 사이드바에 "View Charset" 뷰가 표시됩니다
    - 작업 공간 디렉터리 구조가 접기/펼치기 가능한 폴더 트리로 표시됩니다
    - 각 파일 옆에 감지된 문자 인코딩（예: `UTF-8`, `UTF-8 BOM`, `SJIS`）이 표시됩니다
@@ -160,14 +158,14 @@ vscode-view-charset/
 
 ### 개발 스크립트
 
-| 명령                    | 설명                                     |
-| ----------------------- | ---------------------------------------- |
-| `npm run compile`       | TypeScript 빌드 + NLS 생성               |
-| `npm run watch`         | TypeScript 감시 빌드                     |
-| `npm run watch:webpack` | Webpack 감시 빌드                        |
-| `npm run lint`          | ESLint 검사                              |
+| 명령                    | 설명                                       |
+| ----------------------- | ------------------------------------------ |
+| `npm run compile`       | TypeScript 빌드 + NLS 생성                 |
+| `npm run watch`         | TypeScript 감시 빌드                       |
+| `npm run watch:webpack` | Webpack 감시 빌드                          |
+| `npm run lint`          | ESLint 검사                                |
 | `npm test`              | 전체 테스트 실행（compile → lint → mocha） |
-| `npm run package`       | 프로덕션 빌드（webpack + NLS）           |
+| `npm run package`       | 프로덕션 빌드（webpack + NLS）             |
 
 VS Code에서 **F5** 키를 눌러 Extension Development Host를 실행하여 수동 테스트를 진행할 수 있습니다.
 

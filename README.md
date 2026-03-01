@@ -5,6 +5,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
@@ -23,14 +24,12 @@ With this extension, you can easily check the character encoding of files and id
 ## Features
 
 - **Character Encoding Display**
-
   - Tree View: Displays files and their character encodings in a **folder tree** that mirrors your workspace directory structure — folders are collapsible, files show the detected charset (with BOM suffix when present, e.g. `UTF-8 BOM`) as a description
   - Web View: Rich UI table of file paths, encodings, and line endings with search/filter and sort
   - Status Bar: Shows the active file's encoding (and BOM status) at the bottom-right; click to open the Web View
   - Multi-language support (English, Japanese, Chinese, Korean)
 
 - **Advanced Features**
-
   - BOM detection: displays `UTF-8 BOM`, `UTF-16LE BOM`, etc. in Tree View and Web View
   - Line ending detection: `CRLF`, `LF`, `Mixed`, or `Unknown` shown as a Web View column
   - Context menu "**Copy Charset to Clipboard**": right-click a file in the Tree View to copy its charset string
@@ -66,7 +65,6 @@ With this extension, you can easily check the character encoding of files and id
 ### Viewing Character Encodings
 
 1. **In Tree View**:
-
    - The "View Charset" view appears in the VS Code explorer sidebar
    - Your workspace directory structure is shown as a collapsible folder tree
    - Each file displays its detected character encoding (e.g. `UTF-8`, `UTF-8 BOM`, `SJIS`) as the item description
@@ -160,14 +158,14 @@ vscode-view-charset/
 
 ### Development Scripts
 
-| Command               | Description                          |
-| --------------------- | ------------------------------------ |
-| `npm run compile`     | TypeScript build + NLS generation    |
-| `npm run watch`       | TypeScript watch build               |
-| `npm run watch:webpack` | Webpack watch build                |
-| `npm run lint`        | ESLint check                         |
-| `npm test`            | Full test run (compile → lint → mocha) |
-| `npm run package`     | Production build (webpack + NLS)     |
+| Command                 | Description                            |
+| ----------------------- | -------------------------------------- |
+| `npm run compile`       | TypeScript build + NLS generation      |
+| `npm run watch`         | TypeScript watch build                 |
+| `npm run watch:webpack` | Webpack watch build                    |
+| `npm run lint`          | ESLint check                           |
+| `npm test`              | Full test run (compile → lint → mocha) |
+| `npm run package`       | Production build (webpack + NLS)       |
 
 Press **F5** in VS Code to launch the Extension Development Host for manual testing.
 

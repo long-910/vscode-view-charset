@@ -5,6 +5,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
@@ -23,14 +24,12 @@
 ## 機能
 
 - **文字コード表示**
-
   - ツリービュー: ワークスペースの**フォルダ構造をそのまま反映したツリー形式**でファイルと文字コードを表示。フォルダは折りたたみ可能で、BOM ありの場合は `UTF-8 BOM` のようにサフィックス付きで表示
   - Web ビュー: ファイルパス・文字コード・改行コードをテーブル形式のリッチ UI で表示。検索・フィルタ・ソート機能付き
   - ステータスバー: 右下にアクティブファイルの文字コード（BOM 有無含む）を常時表示。クリックで Web ビューを開く
   - 多言語対応 (英語、日本語、中国語、韓国語)
 
 - **高度な機能**
-
   - BOM 検出: `UTF-8 BOM`、`UTF-16LE BOM` などをツリービュー・Web ビューで表示
   - 改行コード検出: `CRLF`・`LF`・`Mixed`・`Unknown` を Web ビューの列として表示
   - コンテキストメニュー「**クリップボードへ文字コードをコピー**」: ツリービューでファイルを右クリックして文字コード文字列をコピー
@@ -66,7 +65,6 @@
 ### 文字コードの表示
 
 1. **ツリービューで**:
-
    - VS Code のエクスプローラーサイドバーに「View Charset」ビューが表示されます
    - ワークスペースのフォルダ構造がツリー形式で表示されます
    - 各ファイルには検出された文字コード（例: `UTF-8`、`UTF-8 BOM`、`SJIS`）が説明として表示されます
@@ -160,14 +158,14 @@ vscode-view-charset/
 
 ### 開発用スクリプト
 
-| コマンド                | 説明                                   |
-| ----------------------- | -------------------------------------- |
-| `npm run compile`       | TypeScript ビルド + NLS 生成           |
-| `npm run watch`         | TypeScript 監視ビルド                  |
-| `npm run watch:webpack` | Webpack 監視ビルド                     |
-| `npm run lint`          | ESLint チェック                        |
-| `npm test`              | テスト実行（compile → lint → mocha）   |
-| `npm run package`       | 本番ビルド（webpack + NLS）            |
+| コマンド                | 説明                                 |
+| ----------------------- | ------------------------------------ |
+| `npm run compile`       | TypeScript ビルド + NLS 生成         |
+| `npm run watch`         | TypeScript 監視ビルド                |
+| `npm run watch:webpack` | Webpack 監視ビルド                   |
+| `npm run lint`          | ESLint チェック                      |
+| `npm test`              | テスト実行（compile → lint → mocha） |
+| `npm run package`       | 本番ビルド（webpack + NLS）          |
 
 VS Code で **F5** キーを押すと Extension Development Host が起動し、手動テストが行えます。
 

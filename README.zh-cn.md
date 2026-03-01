@@ -5,6 +5,7 @@
 [![Rating](https://img.shields.io/visual-studio-marketplace/r/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
 [![License: MIT](https://img.shields.io/github/license/long-910/vscode-view-charset?style=flat-square)](https://github.com/long-910/vscode-view-charset/blob/main/LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/main.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/main.yml)
+[![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
 
 <div align="center">
 
@@ -23,7 +24,6 @@
 ## 功能
 
 - **字符编码显示**
-
   - 树形视图：以**与工作区目录结构完全一致的文件夹树形式**显示文件和字符编码。文件夹可折叠，存在 BOM 时以 `UTF-8 BOM` 等形式显示
   - 网页视图：以丰富的表格 UI 显示文件路径、字符编码和行尾符，支持搜索/过滤和排序
   - 状态栏：在右下角持续显示当前文件的字符编码（含 BOM 状态），点击可打开网页视图
@@ -65,7 +65,6 @@
 ### 查看字符编码
 
 1. **在树形视图中查看**：
-
    - VS Code 的资源管理器侧边栏中显示 "View Charset" 视图
    - 工作区目录结构以可折叠的文件夹树形式显示
    - 每个文件旁边显示检测到的字符编码（如 `UTF-8`、`UTF-8 BOM`、`SJIS`）
