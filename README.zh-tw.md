@@ -40,25 +40,7 @@
 
 ## 安裝
 
-1. 複製儲存庫：
-
-   ```bash
-   git clone https://github.com/long-910/vscode-view-charset.git
-   ```
-
-2. 安裝相依項目：
-
-   ```bash
-   npm install
-   ```
-
-3. 建置擴充功能：
-
-   ```bash
-   npm run compile
-   ```
-
-4. 按 F5 鍵在 VS Code 中開始偵錯
+在 VS Code 擴充功能檢視（`Ctrl+Shift+X`）中搜尋 **View Charset** 並點擊 **安裝**，或從 [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 安裝。
 
 ## 使用方法
 
@@ -131,51 +113,9 @@
     - 除錯：詳細日誌
     - 資訊：基本日誌
 
-## 開發
-
-### 專案結構
-
-```
-vscode-view-charset/
-├── src/
-│   ├── extension.ts          # 進入點。命令註冊、事件監聽、CacheManager
-│   ├── charsetDetector.ts    # 字元編碼偵測（encoding-japanese，單例）
-│   ├── TreeDataProvider.ts   # 檔案總管樹狀檢視。資料夾層級 + 字元編碼標籤
-│   ├── webview.ts            # WebView 面板。表格 UI、搜尋/排序、CSV 匯出
-│   ├── logger.ts             # 輕量級自訂日誌記錄器（單例）。控制台 + 輸出頻道
-│   └── test/
-│       ├── runTest.ts        # 整合測試執行器（@vscode/test-electron）
-│       ├── fixtures/         # 用於測試工作區的範例檔案
-│       └── suite/
-│           └── extension.test.ts  # Mocha 測試套件（45 個測試）
-├── i18n/                     # NLS 翻譯檔案（en, ja, zh-cn, zh-tw, ko）
-├── images/
-│   ├── icon.png              # 擴充功能圖示
-│   └── viewcharset-icon.png  # 樹狀檢視圖示
-├── package.json              # 擴充功能清單
-└── tsconfig.json             # TypeScript 設定
-```
-
-### 開發指令碼
-
-| 指令                    | 說明                                   |
-| ----------------------- | -------------------------------------- |
-| `npm run compile`       | TypeScript 建置 + NLS 生成             |
-| `npm run watch`         | TypeScript 監看建置                    |
-| `npm run watch:webpack` | Webpack 監看建置                       |
-| `npm run lint`          | ESLint 檢查                            |
-| `npm test`              | 完整測試執行（compile → lint → mocha） |
-| `npm run package`       | 生產建置（webpack + NLS）              |
-
-在 VS Code 中按 **F5** 鍵啟動 Extension Development Host 進行手動測試。
-
 ## 貢獻
 
-1. 分叉儲存庫
-2. 建立功能分支：`git checkout -b feature/your-feature`
-3. 提交變更：`git commit -m "Add your feature"`
-4. 推送到分支：`git push origin feature/your-feature`
-5. 建立拉取請求
+有關開發環境設定、專案結構和貢獻指南，請參見 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 授權
 

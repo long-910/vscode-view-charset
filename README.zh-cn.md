@@ -40,25 +40,7 @@
 
 ## 安装
 
-1. 克隆仓库：
-
-   ```bash
-   git clone https://github.com/long-910/vscode-view-charset.git
-   ```
-
-2. 安装依赖：
-
-   ```bash
-   npm install
-   ```
-
-3. 构建扩展：
-
-   ```bash
-   npm run compile
-   ```
-
-4. 按 F5 键在 VS Code 中开始调试
+在 VS Code 扩展视图（`Ctrl+Shift+X`）中搜索 **View Charset** 并点击 **安装**，或从 [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset) 安装。
 
 ## 使用方法
 
@@ -131,51 +113,9 @@
     - 调试：详细日志
     - 信息：基本日志
 
-## 开发
-
-### 项目结构
-
-```
-vscode-view-charset/
-├── src/
-│   ├── extension.ts          # 入口点。命令注册、事件监听、CacheManager
-│   ├── charsetDetector.ts    # 字符编码检测（encoding-japanese，单例）
-│   ├── TreeDataProvider.ts   # 资源管理器树形视图。文件夹层级 + 字符编码标签
-│   ├── webview.ts            # WebView 面板。表格 UI、搜索/排序、CSV 导出
-│   ├── logger.ts             # 轻量级自定义日志记录器（单例）。控制台 + 输出频道
-│   └── test/
-│       ├── runTest.ts        # 集成测试运行器（@vscode/test-electron）
-│       ├── fixtures/         # 用于测试工作区的示例文件
-│       └── suite/
-│           └── extension.test.ts  # Mocha 测试套件（45 个测试）
-├── i18n/                     # NLS 翻译文件（en, ja, zh-cn, zh-tw, ko）
-├── images/
-│   ├── icon.png              # 扩展图标
-│   └── viewcharset-icon.png  # 树形视图图标
-├── package.json              # 扩展清单
-└── tsconfig.json             # TypeScript 设置
-```
-
-### 开发脚本
-
-| 命令                    | 说明                               |
-| ----------------------- | ---------------------------------- |
-| `npm run compile`       | TypeScript 构建 + NLS 生成         |
-| `npm run watch`         | TypeScript 监视构建                |
-| `npm run watch:webpack` | Webpack 监视构建                   |
-| `npm run lint`          | ESLint 检查                        |
-| `npm test`              | 完整测试（compile → lint → mocha） |
-| `npm run package`       | 生产构建（webpack + NLS）          |
-
-在 VS Code 中按 **F5** 启动 Extension Development Host 进行手动测试。
-
 ## 贡献
 
-1. 分叉仓库
-2. 创建功能分支：`git checkout -b feature/your-feature`
-3. 提交更改：`git commit -m "Add your feature"`
-4. 推送到分支：`git push origin feature/your-feature`
-5. 创建拉取请求
+有关开发环境设置、项目结构和贡献指南，请参见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## 许可证
 
