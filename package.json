@@ -17,7 +17,7 @@
     "url": "https://github.com/long-910/vscode-view-charset/issues"
   },
   "engines": {
-    "vscode": "^1.96.0",
+    "vscode": "^1.109.0",
     "node": ">=18.0.0"
   },
   "categories": [
