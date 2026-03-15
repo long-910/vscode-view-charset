@@ -1,5 +1,7 @@
 # VSCode View Charset Extension
 
+![VSCode View Charset social preview](https://repository-images.githubusercontent.com/340693785/2e1d7a23-86de-4c7e-b17e-c49881b10fd2)
+
 <div align="center">
 
 [![VS Marketplace](https://img.shields.io/visual-studio-marketplace/v/long-kudo.vscode-view-charset?style=flat-square&logo=visualstudiocode&logoColor=white&label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=long-kudo.vscode-view-charset)
@@ -10,6 +12,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/long-910/vscode-view-charset/ci.yml?branch=main&style=flat-square&logo=githubactions&logoColor=white&label=CI)](https://github.com/long-910/vscode-view-charset/actions/workflows/ci.yml)
 [![Release](https://github.com/long-910/vscode-view-charset/actions/workflows/release.yml/badge.svg)](https://github.com/long-910/vscode-view-charset/actions/workflows/release.yml)
 [![Sponsor](https://img.shields.io/badge/Sponsor-GitHub-pink?logo=github)](https://github.com/sponsors/long-910)
+[![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/long910)
 
 🌐 [English](README.md) | [日本語](README.ja.md) | [简体中文](README.zh-cn.md) | [繁體中文](README.zh-tw.md) | [한국어](README.ko.md)
 
