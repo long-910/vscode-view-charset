@@ -72,6 +72,6 @@ jobs:
       - name: Publish to Open VSX
         uses: HaaLeo/publish-vscode-extension@v2
         with:
-          pat: ${{ secrets.OPEN_VSX_PAT }}
+          pat: ${{ secrets.OVSX_PAT }}
           registryUrl: https://open-vsx.org
           extensionFile: ./*.vsix
