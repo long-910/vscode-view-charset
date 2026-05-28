@@ -4,6 +4,14 @@ All notable changes to the "View Charset" extension will be documented in this f
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-05-28
+
+### Added
+
+- Published to [Open VSX Registry](https://open-vsx.org/extension/long-kudo/vscode-view-charset): extension is now available for VSCodium and other Eclipse Theia-based editors
+- CI: added Open VSX publish step to `release.yml` (uses `OPEN_VSX_PAT` secret)
+- Added Open VSX version badge to all READMEs
+
 ## [0.1.6] - 2026-03-01
 
 ### Added
