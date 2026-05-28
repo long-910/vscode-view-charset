@@ -1,0 +1,29 @@
+name: Publish to Open VSX
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to publish (e.g. v0.2.0)"
+        required: true
+
+jobs:
+  publish:
+    name: Publish to Open VSX Registry
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download .vsix from GitHub Release
+        run: |
+          gh release download "${{ github.event.inputs.tag }}" \
+            --pattern "*.vsix" \
+            --repo ${{ github.repository }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to Open VSX
+        uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.OVSX_PAT }}
+          registryUrl: https://open-vsx.org
+          extensionFile: ./*.vsix
